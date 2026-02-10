@@ -8,11 +8,14 @@ interface BeforeInstallPromptEvent extends Event {
 /**
  * Hook para manejar la instalación de la PWA.
  * Captura el evento beforeinstallprompt y expone un método para instalar.
+ * En iOS/Safari muestra instrucciones manuales.
  */
 export function useInstallPWA() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [showIOSGuide, setShowIOSGuide] = useState(false);
 
   useEffect(() => {
     // Detectar si ya está instalada
@@ -24,6 +27,11 @@ export function useInstallPWA() {
       setIsInstalled(true);
       return;
     }
+
+    // Detectar iOS
+    const ua = window.navigator.userAgent;
+    const isiOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    setIsIOS(isiOS);
 
     const handler = (e: Event) => {
       e.preventDefault();
@@ -42,6 +50,12 @@ export function useInstallPWA() {
   }, []);
 
   const install = useCallback(async () => {
+    // En iOS, mostrar guía manual
+    if (isIOS) {
+      setShowIOSGuide(true);
+      return;
+    }
+
     if (!deferredPrompt) return;
 
     setIsInstalling(true);
@@ -57,12 +71,15 @@ export function useInstallPWA() {
       setIsInstalling(false);
       setDeferredPrompt(null);
     }
-  }, [deferredPrompt]);
+  }, [deferredPrompt, isIOS]);
 
   return {
-    canInstall: !!deferredPrompt && !isInstalled,
+    canInstall: (!isInstalled && !!deferredPrompt) || (!isInstalled && isIOS),
     isInstalled,
     isInstalling,
+    isIOS,
+    showIOSGuide,
+    setShowIOSGuide,
     install,
   };
 }

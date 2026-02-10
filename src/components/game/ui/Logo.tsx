@@ -9,7 +9,7 @@ const sizeMap = {
   md: 'w-12 h-12',
   lg: 'w-20 h-20',
   xl: 'w-32 h-32',
-  hero: 'w-[60vw] h-[60vw] max-w-[400px] max-h-[400px] sm:w-[50vw] sm:h-[50vw] md:w-[40vw] md:h-[40vw] lg:w-[30vw] lg:h-[30vw]',
+  hero: 'w-[45vw] h-[45vw] max-w-[350px] max-h-[350px] sm:w-[40vw] sm:h-[40vw] md:w-[35vw] md:h-[35vw] lg:w-[25vw] lg:h-[25vw]',
 };
 
 /**

@@ -5,12 +5,12 @@ import { useInstallPWA } from '../../../hooks/useInstallPWA';
 
 export default function HomeScreen() {
   const { dispatch } = useGame();
-  const { canInstall, isInstalled, isInstalling, install } = useInstallPWA();
+  const { canInstall, isInstalled, isInstalling, isIOS, showIOSGuide, setShowIOSGuide, install } = useInstallPWA();
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-between py-10 px-6 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
+    <div className="min-h-dvh flex flex-col items-center justify-start gap-6 py-8 px-6 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 overflow-y-auto">
       {/* Logo / Título */}
-      <div className="text-center animate-fade-in flex flex-col items-center">
+      <div className="text-center animate-fade-in flex flex-col items-center flex-shrink-0">
         <Logo size="hero" className="mb-3" />
         <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-2">
           El Impostor
@@ -21,7 +21,7 @@ export default function HomeScreen() {
       </div>
 
       {/* Acciones principales */}
-      <div className="w-full max-w-xs flex flex-col gap-3 animate-fade-in">
+      <div className="w-full max-w-xs flex flex-col gap-3 animate-fade-in flex-shrink-0">
         <Button
           onClick={() => dispatch({ type: 'START_SETUP' })}
           variant="primary"
@@ -73,8 +73,37 @@ export default function HomeScreen() {
         )}
       </div>
 
+      {/* Guía iOS */}
+      {showIOSGuide && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6" onClick={() => setShowIOSGuide(false)}>
+          <div className="bg-gray-800 rounded-2xl p-6 max-w-sm w-full text-center" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-white mb-4">Instalar en iPhone/iPad</h3>
+            <div className="flex flex-col gap-4 text-left text-sm text-gray-300">
+              <div className="flex items-start gap-3">
+                <span className="bg-indigo-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+                <p>Tocá el botón <strong className="text-white">Compartir</strong> (el ícono con la flecha hacia arriba ↑) en la barra de Safari</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="bg-indigo-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+                <p>Buscá y tocá <strong className="text-white">"Agregar a pantalla de inicio"</strong></p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="bg-indigo-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+                <p>Tocá <strong className="text-white">"Agregar"</strong> y ¡listo! La app aparecerá en tu pantalla de inicio.</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowIOSGuide(false)}
+              className="mt-6 w-full bg-indigo-600 text-white font-semibold py-3 rounded-xl active:scale-95 transition-all"
+            >
+              ¡Entendido!
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Footer con marca */}
-      <div className="flex flex-col items-center gap-3 pt-4">
+      <div className="flex flex-col items-center gap-3 pt-2 flex-shrink-0">
         <p className="text-xs text-gray-500">
           100% offline · Sin cuentas · Un solo dispositivo
         </p>

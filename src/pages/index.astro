@@ -3,12 +3,12 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="El Impostor – Juego Social de Roles">
-  <main class="min-h-dvh bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 flex flex-col items-center justify-between py-10 px-6">
-    <div class="text-center animate-fade-in flex flex-col items-center">
+  <main class="min-h-dvh bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 flex flex-col items-center justify-start gap-6 py-8 px-6 overflow-y-auto">
+    <div class="text-center animate-fade-in flex flex-col items-center flex-shrink-0">
       <img
         src="/logo/impostorlogo2.svg"
         alt="El Impostor – Logo"
-        class="w-[60vw] h-[60vw] max-w-[400px] max-h-[400px] sm:w-[50vw] sm:h-[50vw] md:w-[40vw] md:h-[40vw] lg:w-[30vw] lg:h-[30vw] mx-auto mb-4 rounded-3xl drop-shadow-2xl object-contain"
+        class="w-[45vw] h-[45vw] max-w-[350px] max-h-[350px] sm:w-[40vw] sm:h-[40vw] md:w-[35vw] md:h-[35vw] lg:w-[25vw] lg:h-[25vw] mx-auto mb-4 rounded-3xl drop-shadow-2xl object-contain"
       />
       <h1 class="text-4xl sm:text-5xl font-black text-white tracking-tight mb-2">El Impostor</h1>
       <p class="text-base sm:text-lg text-indigo-300 mb-8">¿Podrás descubrir quién miente?</p>
@@ -52,7 +52,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
 
     <!-- Footer con marca -->
-    <div class="flex flex-col items-center gap-3 pt-6">
+    <div class="flex flex-col items-center gap-3 pt-2 flex-shrink-0">
       <a
         href="https://devcraftpablo.online/"
         target="_blank"
@@ -69,6 +69,33 @@ import Layout from '../layouts/Layout.astro';
         </span>
       </a>
     </div>
+
+    <!-- Guía instalación iOS -->
+    <div id="ios-guide" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6 hidden">
+      <div class="bg-gray-800 rounded-2xl p-6 max-w-sm w-full text-center">
+        <h3 class="text-lg font-bold text-white mb-4">Instalar en iPhone/iPad</h3>
+        <div class="flex flex-col gap-4 text-left text-sm text-gray-300">
+          <div class="flex items-start gap-3">
+            <span class="bg-indigo-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">1</span>
+            <p>Tocá el botón <strong class="text-white">Compartir</strong> (el ícono con la flecha hacia arriba ↑) en la barra de Safari</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="bg-indigo-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
+            <p>Buscá y tocá <strong class="text-white">"Agregar a pantalla de inicio"</strong></p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="bg-indigo-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">3</span>
+            <p>Tocá <strong class="text-white">"Agregar"</strong> y ¡listo! La app aparecerá en tu pantalla de inicio.</p>
+          </div>
+        </div>
+        <button
+          id="ios-guide-close"
+          class="mt-6 w-full bg-indigo-600 text-white font-semibold py-3 rounded-xl active:scale-95 transition-all"
+        >
+          ¡Entendido!
+        </button>
+      </div>
+    </div>
   </main>
 </Layout>
 
@@ -79,9 +106,16 @@ import Layout from '../layouts/Layout.astro';
     window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as any).standalone === true;
 
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
   if (isStandalone) {
     const msg = document.getElementById('installed-msg');
     if (msg) msg.classList.remove('hidden');
+  } else if (isIOS) {
+    // En iOS no hay beforeinstallprompt, mostrar botón siempre
+    const container = document.getElementById('install-container');
+    if (container) container.classList.remove('hidden');
   }
 
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -92,6 +126,13 @@ import Layout from '../layouts/Layout.astro';
   });
 
   document.getElementById('install-btn')?.addEventListener('click', async () => {
+    if (isIOS) {
+      // Mostrar guía iOS
+      const guide = document.getElementById('ios-guide');
+      if (guide) guide.classList.remove('hidden');
+      return;
+    }
+
     if (!deferredPrompt) return;
     const btn = document.getElementById('install-btn') as HTMLButtonElement;
     btn.textContent = 'Instalando...';
@@ -107,6 +148,18 @@ import Layout from '../layouts/Layout.astro';
       }
     } catch {}
     deferredPrompt = null;
+  });
+
+  // Cerrar guía iOS
+  document.getElementById('ios-guide-close')?.addEventListener('click', () => {
+    const guide = document.getElementById('ios-guide');
+    if (guide) guide.classList.add('hidden');
+  });
+  document.getElementById('ios-guide')?.addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      const guide = document.getElementById('ios-guide');
+      if (guide) guide.classList.add('hidden');
+    }
   });
 
   window.addEventListener('appinstalled', () => {
