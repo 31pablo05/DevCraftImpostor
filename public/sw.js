@@ -1,4 +1,4 @@
-const CACHE_NAME = 'impostor-v1';
+const CACHE_NAME = 'impostor-v2';
 const ASSETS = [
   '/',
   '/jugar',
@@ -32,8 +32,10 @@ self.addEventListener('activate', (event) => {
 
 // Fetch: cache-first strategy
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests
+  // Only handle GET requests over http/https
   if (event.request.method !== 'GET') return;
+  const url = new URL(event.request.url);
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
   event.respondWith(
     caches
@@ -42,8 +44,7 @@ self.addEventListener('fetch', (event) => {
         if (cached) return cached;
 
         return fetch(event.request).then((response) => {
-          // Don't cache non-ok responses or opaque responses beyond initial
-          if (!response || response.status !== 200) return response;
+          if (!response || response.status !== 200 || response.type === 'opaque') return response;
 
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
