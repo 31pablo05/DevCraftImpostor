@@ -106,7 +106,7 @@ export default function SetupScreen() {
           {/* Número de jugadores */}
           <div className="mb-5">
             <label className="block text-sm text-gray-300 mb-2">
-              Jugadores: <strong className="text-white">{state.settings.playerCount}</strong>
+              Jugadores: <strong className="text-white text-lg">{state.settings.playerCount}</strong>
             </label>
             <input
               type="range"
@@ -119,12 +119,29 @@ export default function SetupScreen() {
             <div className="flex justify-between text-xs text-gray-500 mt-1">
               <span>3</span><span>20</span>
             </div>
+            <div className="flex items-center justify-center gap-4 mt-2">
+              <button
+                onClick={() => handlePlayerCountChange(state.settings.playerCount - 1)}
+                disabled={state.settings.playerCount <= 3}
+                className="w-12 h-12 rounded-xl bg-gray-700 text-white text-2xl font-bold flex items-center justify-center hover:bg-gray-600 active:scale-90 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                −
+              </button>
+              <span className="text-2xl font-black text-white min-w-[3ch] text-center">{state.settings.playerCount}</span>
+              <button
+                onClick={() => handlePlayerCountChange(state.settings.playerCount + 1)}
+                disabled={state.settings.playerCount >= 20}
+                className="w-12 h-12 rounded-xl bg-indigo-600 text-white text-2xl font-bold flex items-center justify-center hover:bg-indigo-700 active:scale-90 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                +
+              </button>
+            </div>
           </div>
 
           {/* Impostores */}
           <div className="mb-5">
             <label className="block text-sm text-gray-300 mb-2">
-              Impostores: <strong className="text-white">{state.settings.impostorCount}</strong>
+              Impostores: <strong className="text-white text-lg">{state.settings.impostorCount}</strong>
             </label>
             <input
               type="range"
@@ -136,6 +153,30 @@ export default function SetupScreen() {
               }
               className="w-full accent-red-500"
             />
+            <div className="flex items-center justify-center gap-4 mt-2">
+              <button
+                onClick={() => {
+                  const next = state.settings.impostorCount - 1;
+                  if (next >= 1) dispatch({ type: 'UPDATE_SETTINGS', payload: { impostorCount: next } });
+                }}
+                disabled={state.settings.impostorCount <= 1}
+                className="w-12 h-12 rounded-xl bg-gray-700 text-white text-2xl font-bold flex items-center justify-center hover:bg-gray-600 active:scale-90 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                −
+              </button>
+              <span className="text-2xl font-black text-white min-w-[3ch] text-center">{state.settings.impostorCount}</span>
+              <button
+                onClick={() => {
+                  const maxImp = Math.max(1, state.settings.playerCount - 2);
+                  const next = state.settings.impostorCount + 1;
+                  if (next <= maxImp) dispatch({ type: 'UPDATE_SETTINGS', payload: { impostorCount: next } });
+                }}
+                disabled={state.settings.impostorCount >= Math.max(1, state.settings.playerCount - 2)}
+                className="w-12 h-12 rounded-xl bg-red-600 text-white text-2xl font-bold flex items-center justify-center hover:bg-red-700 active:scale-90 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                +
+              </button>
+            </div>
           </div>
 
           {/* Timer */}
