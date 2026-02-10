@@ -13,7 +13,7 @@ const sizeMap = {
 
 /**
  * Logo del juego El Impostor.
- * Usa la imagen SVG de /logo/logoimpostor1.svg
+ * Usa la imagen SVG de /logo/impostorlogo2.svg
  */
 export default function Logo({
   size = 'md',
@@ -23,7 +23,7 @@ export default function Logo({
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <img
-        src="/logo/logoimpostor1.svg"
+        src="/logo/impostorlogo2.svg"
         alt="El Impostor"
         className={`${sizeMap[size]} rounded-xl object-contain drop-shadow-lg`}
         draggable={false}

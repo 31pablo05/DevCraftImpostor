@@ -1,10 +1,10 @@
-const CACHE_NAME = 'impostor-v3';
+const CACHE_NAME = 'impostor-v4';
 const ASSETS = [
   '/',
   '/jugar',
   '/ajustes',
   '/manifest.json',
-  '/logo/logoimpostor1.svg',
+  '/logo/impostorlogo2.svg',
   '/logo/logoimpostor.jpg',
 ];
 
