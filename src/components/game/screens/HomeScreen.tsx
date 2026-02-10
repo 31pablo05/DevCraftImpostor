@@ -8,8 +8,8 @@ export default function HomeScreen() {
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
       {/* Logo / Título */}
-      <div className="text-center mb-12 animate-fade-in flex flex-col items-center">
-        <Logo size="xl" className="mb-6" />
+      <div className="text-center mb-8 animate-fade-in flex flex-col items-center">
+        <Logo size="hero" className="mb-4" />
         <h1 className="text-5xl font-black text-white tracking-tight mb-3">
           El Impostor
         </h1>
