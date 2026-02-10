@@ -1,14 +1,12 @@
-const CACHE_NAME = 'impostor-v5';
+const CACHE_NAME = 'impostor-v6';
 const ASSETS = [
-  '/',
-  '/jugar',
-  '/ajustes',
   '/manifest.json',
   '/logo/impostorlogo2.svg',
   '/logo/logo2.png',
+  '/logo/devcraft-logo.png',
 ];
 
-// Install: cache static assets
+// Install: cache only static assets (not HTML pages)
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
@@ -30,13 +28,27 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: cache-first strategy
+// Fetch: network-first for pages, cache-first for assets
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests over http/https
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
+  // HTML pages: always try network first
+  if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('/')))
+    );
+    return;
+  }
+
+  // Other assets (JS, CSS, images): cache-first
   event.respondWith(
     caches
       .match(event.request)
@@ -54,12 +66,6 @@ self.addEventListener('fetch', (event) => {
           return response;
         });
       })
-      .catch(() => {
-        // Offline fallback for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('/jugar');
-        }
-        return new Response('Offline', { status: 503 });
-      })
+      .catch(() => new Response('Offline', { status: 503 }))
   );
 });
