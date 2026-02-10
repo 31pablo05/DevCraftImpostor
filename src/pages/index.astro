@@ -3,56 +3,64 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="El Impostor – Juego Social de Roles">
-  <main class="min-h-dvh bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 flex flex-col items-center justify-start gap-6 py-8 px-6 overflow-y-auto">
-    <div class="text-center animate-fade-in flex flex-col items-center flex-shrink-0">
-      <img
-        src="/logo/impostorlogo2.svg"
-        alt="El Impostor – Logo"
-        class="w-[45vw] h-[45vw] max-w-[350px] max-h-[350px] sm:w-[40vw] sm:h-[40vw] md:w-[35vw] md:h-[35vw] lg:w-[25vw] lg:h-[25vw] mx-auto mb-4 rounded-3xl drop-shadow-2xl object-contain"
-      />
-      <h1 class="text-4xl sm:text-5xl font-black text-white tracking-tight mb-2">El Impostor</h1>
-      <p class="text-base sm:text-lg text-indigo-300 mb-8">¿Podrás descubrir quién miente?</p>
+  <main class="min-h-dvh bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 flex flex-col items-center py-8 px-6 overflow-y-auto">
+    
+    <!-- Logo -->
+    <img
+      src="/logo/impostorlogo2.svg"
+      alt="El Impostor – Logo"
+      class="w-[45vw] h-[45vw] max-w-[300px] max-h-[300px] sm:w-[35vw] sm:h-[35vw] md:w-[28vw] md:h-[28vw] lg:w-[20vw] lg:h-[20vw] mb-3 rounded-3xl drop-shadow-2xl object-contain animate-fade-in"
+    />
 
+    <!-- Título -->
+    <h1 class="text-4xl sm:text-5xl font-black text-white tracking-tight mb-1 text-center animate-fade-in">El Impostor</h1>
+    <p class="text-base sm:text-lg text-indigo-300 mb-6 text-center animate-fade-in">¿Podrás descubrir quién miente?</p>
+
+    <!-- Botones -->
+    <div class="w-full max-w-xs flex flex-col gap-3 animate-fade-in">
       <a
         href="/jugar"
-        class="inline-flex items-center gap-2 bg-indigo-600 text-white font-semibold px-8 py-4 rounded-xl text-lg shadow-lg shadow-indigo-500/25 hover:bg-indigo-700 active:scale-95 transition-all"
+        class="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-semibold py-3.5 px-6 rounded-xl text-lg shadow-lg shadow-indigo-500/25 hover:bg-indigo-700 active:scale-95 transition-all"
       >
         🚀 Jugar ahora
       </a>
 
-      <!-- Botón instalar PWA -->
-      <div id="install-container" class="mt-4 hidden">
-        <button
-          id="install-btn"
-          class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold px-8 py-4 rounded-xl text-base shadow-lg shadow-green-500/25 hover:from-green-700 hover:to-emerald-700 active:scale-95 transition-all animate-pulse"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v12m0 0l-4-4m4 4l4-4" />
-          </svg>
-          📲 Instalar en mi celular
-        </button>
-      </div>
+      <a
+        href="/jugar#como-jugar"
+        id="how-to-play-btn"
+        class="w-full flex items-center justify-center gap-2 bg-gray-700/60 text-white font-semibold py-3 px-6 rounded-xl text-base border border-gray-600/50 hover:bg-gray-700 active:scale-95 transition-all"
+      >
+        📖 Cómo jugar
+      </a>
 
-      <div id="installed-msg" class="mt-4 hidden">
-        <span class="inline-flex items-center gap-2 text-green-400 text-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-          App instalada
-        </span>
-      </div>
+      <!-- Botón instalar PWA - siempre visible, JS lo maneja -->
+      <button
+        id="install-btn"
+        class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3.5 px-6 rounded-xl text-base shadow-lg shadow-green-500/25 hover:from-green-700 hover:to-emerald-700 active:scale-95 transition-all animate-pulse"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v12m0 0l-4-4m4 4l4-4" />
+        </svg>
+        📲 Instalar en mi celular
+      </button>
 
-      <div class="mt-6 flex flex-col gap-3 items-center">
-        <div class="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400">
-          <span>📱 Mobile-first</span>
-          <span>🔒 Sin cuentas</span>
-          <span>📴 100% offline</span>
-        </div>
+      <div id="installed-msg" class="hidden w-full flex items-center justify-center gap-2 text-green-400 text-sm py-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        App instalada
       </div>
     </div>
 
+    <!-- Info -->
+    <div class="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400 mt-6">
+      <span>📱 Mobile-first</span>
+      <span>🔒 Sin cuentas</span>
+      <span>📴 100% offline</span>
+    </div>
+
     <!-- Footer con marca -->
-    <div class="flex flex-col items-center gap-3 pt-2 flex-shrink-0">
+    <div class="mt-auto pt-6 flex flex-col items-center">
       <a
         href="https://devcraftpablo.online/"
         target="_blank"
@@ -101,6 +109,8 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
   let deferredPrompt: any = null;
+  const installBtn = document.getElementById('install-btn');
+  const installedMsg = document.getElementById('installed-msg');
 
   const isStandalone =
     window.matchMedia('(display-mode: standalone)').matches ||
@@ -109,63 +119,61 @@ import Layout from '../layouts/Layout.astro';
   const ua = navigator.userAgent;
   const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
+  // Si ya está instalada, ocultar botón y mostrar mensaje
   if (isStandalone) {
-    const msg = document.getElementById('installed-msg');
-    if (msg) msg.classList.remove('hidden');
-  } else if (isIOS) {
-    // En iOS no hay beforeinstallprompt, mostrar botón siempre
-    const container = document.getElementById('install-container');
-    if (container) container.classList.remove('hidden');
+    if (installBtn) installBtn.style.display = 'none';
+    if (installedMsg) installedMsg.classList.remove('hidden');
   }
 
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    const container = document.getElementById('install-container');
-    if (container) container.classList.remove('hidden');
   });
 
-  document.getElementById('install-btn')?.addEventListener('click', async () => {
+  installBtn?.addEventListener('click', async () => {
     if (isIOS) {
-      // Mostrar guía iOS
       const guide = document.getElementById('ios-guide');
       if (guide) guide.classList.remove('hidden');
       return;
     }
 
-    if (!deferredPrompt) return;
-    const btn = document.getElementById('install-btn') as HTMLButtonElement;
-    btn.textContent = 'Instalando...';
-    btn.disabled = true;
-    try {
-      await deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        const container = document.getElementById('install-container');
-        const msg = document.getElementById('installed-msg');
-        if (container) container.classList.add('hidden');
-        if (msg) msg.classList.remove('hidden');
+    if (deferredPrompt) {
+      try {
+        await deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          if (installBtn) installBtn.style.display = 'none';
+          if (installedMsg) installedMsg.classList.remove('hidden');
+        }
+      } catch {}
+      deferredPrompt = null;
+    } else {
+      // Fallback: si no hay prompt nativo, mostrar guía manual
+      const guide = document.getElementById('ios-guide');
+      if (guide) {
+        const title = guide.querySelector('h3');
+        if (title) title.textContent = 'Cómo instalar la app';
+        guide.querySelector('p:first-of-type')!.innerHTML =
+          'En <strong class="text-white">Chrome</strong>: tocá los 3 puntos (⋮) arriba a la derecha';
+        guide.querySelectorAll('p')[1]!.innerHTML =
+          'Buscá y tocá <strong class="text-white">"Instalar app"</strong> o <strong class="text-white">"Agregar a pantalla de inicio"</strong>';
+        guide.classList.remove('hidden');
       }
-    } catch {}
-    deferredPrompt = null;
+    }
   });
 
-  // Cerrar guía iOS
+  // Cerrar guía
   document.getElementById('ios-guide-close')?.addEventListener('click', () => {
-    const guide = document.getElementById('ios-guide');
-    if (guide) guide.classList.add('hidden');
+    document.getElementById('ios-guide')?.classList.add('hidden');
   });
   document.getElementById('ios-guide')?.addEventListener('click', (e) => {
     if (e.target === e.currentTarget) {
-      const guide = document.getElementById('ios-guide');
-      if (guide) guide.classList.add('hidden');
+      (e.currentTarget as HTMLElement).classList.add('hidden');
     }
   });
 
   window.addEventListener('appinstalled', () => {
-    const container = document.getElementById('install-container');
-    const msg = document.getElementById('installed-msg');
-    if (container) container.classList.add('hidden');
-    if (msg) msg.classList.remove('hidden');
+    if (installBtn) installBtn.style.display = 'none';
+    if (installedMsg) installedMsg.classList.remove('hidden');
   });
 </script>
