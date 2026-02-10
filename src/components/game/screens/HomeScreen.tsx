@@ -1,5 +1,6 @@
 import { useGame } from '../GameProvider';
 import Button from '../ui/Button';
+import Logo from '../ui/Logo';
 
 export default function HomeScreen() {
   const { dispatch } = useGame();
@@ -7,8 +8,8 @@ export default function HomeScreen() {
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
       {/* Logo / Título */}
-      <div className="text-center mb-12 animate-fade-in">
-        <div className="text-8xl mb-6 drop-shadow-2xl">🎭</div>
+      <div className="text-center mb-12 animate-fade-in flex flex-col items-center">
+        <Logo size="xl" className="mb-6" />
         <h1 className="text-5xl font-black text-white tracking-tight mb-3">
           El Impostor
         </h1>

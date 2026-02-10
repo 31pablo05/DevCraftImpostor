@@ -65,7 +65,8 @@ export default function HowToPlayScreen() {
           >
             ←
           </button>
-          <h1 className="text-2xl font-bold text-white">📖 Cómo jugar</h1>
+          <img src="/logo/logoimpostor1.svg" alt="El Impostor" className="w-8 h-8 rounded-lg" />
+          <h1 className="text-2xl font-bold text-white">Cómo jugar</h1>
         </div>
 
         {/* Pasos */}

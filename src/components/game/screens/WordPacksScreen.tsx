@@ -89,6 +89,7 @@ export default function WordPacksScreen() {
           >
             ←
           </button>
+          <img src="/logo/logoimpostor1.svg" alt="El Impostor" className="w-8 h-8 rounded-lg" />
           <h1 className="text-2xl font-bold text-white">📦 Categorías</h1>
         </div>
 

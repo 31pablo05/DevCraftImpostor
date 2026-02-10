@@ -5,9 +5,12 @@ interface Props {
 }
 
 const {
-  title = 'El Impostor – Juego Social',
-  description = 'Juego social de detección del impostor para jugar con amigos. 100% offline, un solo dispositivo.',
+  title = 'El Impostor – Juego Social de Roles | Gratis y Offline',
+  description = 'Juega al Impostor con amigos desde un solo celular. Descubre quién miente con roles secretos, votación anónima y packs de palabras. 100% gratis, offline y sin registro.',
 } = Astro.props;
+
+const siteUrl = 'https://dev-craft-impostor.vercel.app';
+const ogImage = `${siteUrl}/logo/logoimpostor.jpg`;
 
 import '../styles/global.css';
 ---
@@ -22,19 +25,52 @@ import '../styles/global.css';
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#6366F1" />
+    <meta name="author" content="DevCraft" />
+    <meta name="keywords" content="impostor, juego social, juego de mesa, werewolf, mafia, juego offline, juego gratis, juego para fiestas, PWA, juego de roles" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={siteUrl} />
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+    <link rel="icon" type="image/svg+xml" href="/logo/logoimpostor1.svg" />
+    <link rel="icon" type="image/jpeg" sizes="180x180" href="/logo/logoimpostor.jpg" />
+    <link rel="apple-touch-icon" href="/logo/logoimpostor.jpg" />
     <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Impostor" />
+    <meta name="apple-mobile-web-app-title" content="El Impostor" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="500" />
+    <meta property="og:image:height" content="500" />
+    <meta property="og:image:alt" content="El Impostor – Juego Social de Roles" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="El Impostor" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "El Impostor",
+      "description": description,
+      "url": siteUrl,
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "image": ogImage,
+      "inLanguage": "es"
+    })} />
 
     <!-- Styles are imported via Astro frontmatter -->
   </head>

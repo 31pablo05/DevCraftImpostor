@@ -1,11 +1,11 @@
-const CACHE_NAME = 'impostor-v2';
+const CACHE_NAME = 'impostor-v3';
 const ASSETS = [
   '/',
   '/jugar',
   '/ajustes',
   '/manifest.json',
-  '/icons/icon-192.svg',
-  '/icons/icon-512.svg',
+  '/logo/logoimpostor1.svg',
+  '/logo/logoimpostor.jpg',
 ];
 
 // Install: cache static assets
