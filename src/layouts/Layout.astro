@@ -8,6 +8,8 @@ const {
   title = 'El Impostor – Juego Social',
   description = 'Juego social de detección del impostor para jugar con amigos. 100% offline, un solo dispositivo.',
 } = Astro.props;
+
+import '../styles/global.css';
 ---
 
 <!doctype html>
@@ -25,7 +27,7 @@ const {
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Impostor" />
 
@@ -34,8 +36,7 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="/src/styles/global.css" />
+    <!-- Styles are imported via Astro frontmatter -->
   </head>
   <body class="bg-gray-900 text-gray-100 antialiased font-sans overscroll-none">
     <slot />
