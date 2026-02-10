@@ -1,0 +1,81 @@
+/** Fases del juego */
+export type GamePhase =
+  | 'HOME'
+  | 'SETUP'
+  | 'PASS_DEVICE'
+  | 'REVEAL_ROLE'
+  | 'TIMER'
+  | 'DISCUSSION'
+  | 'VOTING'
+  | 'RESULTS'
+  | 'HOW_TO_PLAY'
+  | 'WORD_PACKS';
+
+/** Jugador */
+export interface Player {
+  id: string;
+  name: string;
+  isRevealed: boolean;
+}
+
+/** Configuración de la partida */
+export interface GameSettings {
+  playerCount: number;       // 3-20
+  impostorCount: number;     // 1-5
+  timerSeconds: number;      // 0 = sin timer, max 600
+  categoryId: string;        // ID del pack de palabras
+  vibrationEnabled: boolean;
+  soundEnabled: boolean;
+}
+
+/** Estado global del juego */
+export interface GameState {
+  phase: GamePhase;
+  players: Player[];
+  currentPlayerIndex: number;
+  secretWord: string | null;
+  impostorIndexes: number[];
+  votes: Record<string, string>; // {voterId: accusedId}
+  settings: GameSettings;
+  gameId: string;
+  startedAt: number | null;
+}
+
+/** Pack de palabras */
+export interface WordPack {
+  id: string;
+  name: string;
+  emoji: string;
+  words: string[];
+  isCustom: boolean;
+}
+
+/** Acciones del reducer */
+export type GameAction =
+  | { type: 'START_SETUP' }
+  | { type: 'GO_HOME' }
+  | { type: 'SHOW_HOW_TO_PLAY' }
+  | { type: 'SHOW_WORD_PACKS' }
+  | { type: 'UPDATE_SETTINGS'; payload: Partial<GameSettings> }
+  | { type: 'SET_PLAYERS'; payload: Player[] }
+  | { type: 'START_GAME'; payload: { players: Player[]; secretWord: string; impostorIndexes: number[] } }
+  | { type: 'NEXT_PLAYER' }
+  | { type: 'REVEAL_CURRENT_ROLE' }
+  | { type: 'START_TIMER' }
+  | { type: 'END_TIMER' }
+  | { type: 'START_DISCUSSION' }
+  | { type: 'START_VOTING' }
+  | { type: 'CAST_VOTE'; payload: { voterId: string; accusedId: string } }
+  | { type: 'SHOW_RESULTS' }
+  | { type: 'RESTART_GAME'; payload: { secretWord: string; impostorIndexes: number[] } }
+  | { type: 'NEW_GAME' };
+
+/** Resultado de votación */
+export interface VoteResult {
+  accusedId: string;
+  accusedName: string;
+  voteCount: number;
+  wasImpostor: boolean;
+  impostorsWon: boolean;
+  voteCounts: Record<string, number>;
+}

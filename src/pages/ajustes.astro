@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="El Impostor – Ajustes">
+  <main class="min-h-dvh bg-gradient-to-br from-gray-900 via-gray-900 to-indigo-950 p-4">
+    <div class="max-w-lg mx-auto py-6">
+      <div class="flex items-center gap-3 mb-6">
+        <a href="/jugar" class="text-2xl text-gray-400 hover:text-white transition-colors p-2">←</a>
+        <h1 class="text-2xl font-bold text-white">⚙️ Ajustes</h1>
+      </div>
+
+      <div class="bg-gray-800/80 rounded-2xl border border-gray-700/50 p-6 space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-2">Acerca de</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">
+            <strong>El Impostor</strong> es un juego social gratuito y 100% offline.
+            Se juega con un solo dispositivo que se pasa entre jugadores.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-2">Datos</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">
+            Todos los datos se almacenan localmente en tu dispositivo. 
+            No se envía ninguna información a ningún servidor.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-2">Borrar datos</h3>
+          <p class="text-sm text-gray-400 mb-3">
+            Elimina todos los packs personalizados y restablece los ajustes.
+          </p>
+          <button
+            id="clear-data"
+            class="px-4 py-2 bg-red-600/20 text-red-400 border border-red-500/30 rounded-lg text-sm font-medium hover:bg-red-600/30 transition-colors"
+          >
+            🗑 Borrar todos los datos
+          </button>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-2">Versión</h3>
+          <p class="text-sm text-gray-500">v1.0.0</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script is:inline>
+    document.getElementById('clear-data')?.addEventListener('click', () => {
+      if (confirm('¿Estás seguro? Se borrarán todos los datos guardados.')) {
+        localStorage.clear();
+        alert('Datos eliminados correctamente.');
+        window.location.reload();
+      }
+    });
+  </script>
+</Layout>

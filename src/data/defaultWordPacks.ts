@@ -1,0 +1,113 @@
+import type { WordPack } from '../lib/types/game.types';
+
+/** Packs de palabras incluidos por defecto */
+export const defaultWordPacks: WordPack[] = [
+  {
+    id: 'animales',
+    name: 'Animales',
+    emoji: '🐾',
+    isCustom: false,
+    words: [
+      'Perro', 'Gato', 'Elefante', 'Tigre', 'León', 'Jirafa', 'Cebra',
+      'Delfín', 'Águila', 'Serpiente', 'Cocodrilo', 'Pingüino', 'Oso',
+      'Caballo', 'Mono', 'Loro', 'Tortuga', 'Tiburón', 'Ballena', 'Lobo',
+      'Conejo', 'Panda', 'Koala', 'Camaleón', 'Pulpo', 'Búho', 'Zorro',
+      'Ciervo', 'Rinoceronte', 'Flamenco',
+    ],
+  },
+  {
+    id: 'comida',
+    name: 'Comida',
+    emoji: '🍕',
+    isCustom: false,
+    words: [
+      'Pizza', 'Hamburguesa', 'Sushi', 'Tacos', 'Paella', 'Pasta',
+      'Ensalada', 'Helado', 'Chocolate', 'Croissant', 'Ceviche', 'Ramen',
+      'Tortilla', 'Empanada', 'Brownie', 'Churros', 'Gazpacho', 'Lasaña',
+      'Donut', 'Burrito', 'Sandwich', 'Crepe', 'Falafel', 'Wok',
+      'Pancake', 'Curry', 'Risotto', 'Nachos', 'Fondue', 'Guacamole',
+    ],
+  },
+  {
+    id: 'profesiones',
+    name: 'Profesiones',
+    emoji: '👷',
+    isCustom: false,
+    words: [
+      'Médico', 'Bombero', 'Piloto', 'Chef', 'Profesor', 'Astronauta',
+      'Detective', 'Arquitecto', 'Veterinario', 'Fotógrafo', 'Abogado',
+      'Ingeniero', 'Mecánico', 'Enfermero', 'Periodista', 'Electricista',
+      'Carpintero', 'Dentista', 'Científico', 'Policía', 'Músico',
+      'Programador', 'Payaso', 'Mago', 'Cartero', 'Pintor', 'Actor',
+      'Agricultor', 'Peluquero', 'Bibliotecario',
+    ],
+  },
+  {
+    id: 'lugares',
+    name: 'Lugares',
+    emoji: '🏖️',
+    isCustom: false,
+    words: [
+      'Playa', 'Montaña', 'Hospital', 'Aeropuerto', 'Biblioteca',
+      'Cementerio', 'Estadio', 'Museo', 'Parque', 'Supermercado',
+      'Iglesia', 'Cine', 'Zoológico', 'Restaurante', 'Gimnasio',
+      'Gasolinera', 'Comisaría', 'Farmacia', 'Discoteca', 'Castillo',
+      'Escuela', 'Circo', 'Banco', 'Selva', 'Desierto', 'Volcán',
+      'Cueva', 'Acuario', 'Faro', 'Submarino',
+    ],
+  },
+  {
+    id: 'peliculas',
+    name: 'Películas',
+    emoji: '🎬',
+    isCustom: false,
+    words: [
+      'Titanic', 'Matrix', 'Avatar', 'Shrek', 'Batman', 'Frozen',
+      'Coco', 'Joker', 'Gladiador', 'Inception', 'Rocky', 'Toy Story',
+      'Alien', 'Jumanji', 'Ratatouille', 'Buscando a Nemo', 'ET',
+      'Pinocho', 'Bambi', 'Up', 'Aladdin', 'Mulan', 'Tarzán',
+      'Grease', 'Venom', 'Deadpool', 'Thor', 'Encanto', 'Moana', 'Cars',
+    ],
+  },
+  {
+    id: 'deportes',
+    name: 'Deportes',
+    emoji: '⚽',
+    isCustom: false,
+    words: [
+      'Fútbol', 'Baloncesto', 'Tenis', 'Natación', 'Boxeo', 'Ciclismo',
+      'Golf', 'Surf', 'Karate', 'Esgrima', 'Patinaje', 'Rugby',
+      'Béisbol', 'Voleibol', 'Hockey', 'Skate', 'Escalada', 'Remo',
+      'Tiro con arco', 'Judo', 'Esquí', 'Snowboard', 'Atletismo',
+      'Gimnasia', 'Polo', 'Waterpolo', 'Bádminton', 'Ping Pong',
+      'Parkour', 'Lucha libre',
+    ],
+  },
+  {
+    id: 'objetos',
+    name: 'Objetos',
+    emoji: '🔧',
+    isCustom: false,
+    words: [
+      'Reloj', 'Espejo', 'Martillo', 'Telescopio', 'Paraguas', 'Vela',
+      'Brújula', 'Candado', 'Tijeras', 'Cámara', 'Micrófono', 'Guitarra',
+      'Corona', 'Llave', 'Mapa', 'Lupa', 'Balanza', 'Ancla', 'Dado',
+      'Abanico', 'Sombrero', 'Globo', 'Trompeta', 'Linterna', 'Pincel',
+      'Binoculares', 'Termómetro', 'Imán', 'Escalera', 'Silla',
+    ],
+  },
+  {
+    id: 'personajes',
+    name: 'Personajes Famosos',
+    emoji: '🌟',
+    isCustom: false,
+    words: [
+      'Superman', 'Pikachu', 'Mario Bros', 'Homero Simpson', 'Bob Esponja',
+      'Mickey Mouse', 'Harry Potter', 'Darth Vader', 'Spiderman', 'Goku',
+      'Cenicienta', 'Gandalf', 'Yoda', 'Iron Man', 'Hulk', 'Elsa',
+      'Naruto', 'Sonic', 'Bugs Bunny', 'Scooby Doo', 'Garfield',
+      'Robin Hood', 'Peter Pan', 'Rapunzel', 'Olaf', 'Groot', 'Thanos',
+      'Sherlock Holmes', 'Drácula', 'Frankenstein',
+    ],
+  },
+];
