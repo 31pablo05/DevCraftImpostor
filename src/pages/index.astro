@@ -20,6 +20,28 @@ import Layout from '../layouts/Layout.astro';
         🚀 Jugar ahora
       </a>
 
+      <!-- Botón instalar PWA -->
+      <div id="install-container" class="mt-4 hidden">
+        <button
+          id="install-btn"
+          class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold px-8 py-4 rounded-xl text-base shadow-lg shadow-green-500/20 hover:from-green-700 hover:to-emerald-700 active:scale-95 transition-all"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v12m0 0l-4-4m4 4l4-4" />
+          </svg>
+          📲 Instalar en mi celular
+        </button>
+      </div>
+
+      <div id="installed-msg" class="mt-4 hidden">
+        <span class="inline-flex items-center gap-2 text-green-400 text-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          App instalada
+        </span>
+      </div>
+
       <div class="mt-8 flex flex-col gap-3 items-center">
         <div class="flex items-center gap-6 text-sm text-gray-400">
           <span>📱 Mobile-first</span>
@@ -28,5 +50,67 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </div>
     </div>
+
+    <!-- Footer con portfolio link -->
+    <div class="absolute bottom-6 flex flex-col items-center gap-3">
+      <a
+        href="https://devcraftpablo.online/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-2 text-xs text-gray-400 hover:text-indigo-400 transition-colors"
+      >
+        <img
+          src="/logo/devcraft-logo.png"
+          alt="DevCraft"
+          class="w-5 h-5 rounded-full object-cover"
+        />
+        <span>Más proyectos en <span class="underline underline-offset-2">devcraftpablo.online</span></span>
+      </a>
+    </div>
   </main>
 </Layout>
+
+<script>
+  let deferredPrompt: any = null;
+
+  const isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    (navigator as any).standalone === true;
+
+  if (isStandalone) {
+    const msg = document.getElementById('installed-msg');
+    if (msg) msg.classList.remove('hidden');
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const container = document.getElementById('install-container');
+    if (container) container.classList.remove('hidden');
+  });
+
+  document.getElementById('install-btn')?.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    const btn = document.getElementById('install-btn') as HTMLButtonElement;
+    btn.textContent = 'Instalando...';
+    btn.disabled = true;
+    try {
+      await deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        const container = document.getElementById('install-container');
+        const msg = document.getElementById('installed-msg');
+        if (container) container.classList.add('hidden');
+        if (msg) msg.classList.remove('hidden');
+      }
+    } catch {}
+    deferredPrompt = null;
+  });
+
+  window.addEventListener('appinstalled', () => {
+    const container = document.getElementById('install-container');
+    const msg = document.getElementById('installed-msg');
+    if (container) container.classList.add('hidden');
+    if (msg) msg.classList.remove('hidden');
+  });
+</script>
