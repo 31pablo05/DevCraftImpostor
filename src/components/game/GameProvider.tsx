@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   useContext,
   useReducer,
@@ -39,8 +39,6 @@ function getInitialState(): GameState {
     roundNumber: 1,
     maxRounds: 2, // Siempre 2 rondas máximo
     eliminatedPlayerIds: [],
-    clueWords: {},
-    cluePlayerIndex: 0,
   };
 }
 
@@ -83,8 +81,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         roundNumber: 1,
         maxRounds: 2,
         eliminatedPlayerIds: [],
-        clueWords: {},
-        cluePlayerIndex: 0,
       };
 
     case 'REVEAL_CURRENT_ROLE':
@@ -145,40 +141,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case 'CONTINUE_NEXT_ROUND':
       return {
         ...state,
-        phase: 'CLUE_PASS_DEVICE',
+        phase: 'DISCUSSION',
         roundNumber: 2,
         eliminatedPlayerIds: [...state.eliminatedPlayerIds, action.payload.eliminatedPlayerId],
         votes: {},
-        clueWords: {},
-        cluePlayerIndex: 0,
-        currentPlayerIndex: 0,
       };
-
-    case 'SUBMIT_CLUE':
-      return {
-        ...state,
-        clueWords: {
-          ...state.clueWords,
-          [action.payload.playerId]: action.payload.word,
-        },
-      };
-
-    case 'NEXT_CLUE_PLAYER': {
-      const nextClueIdx = state.cluePlayerIndex + 1;
-      const activeForClues = state.players.filter(
-        (p) => !state.eliminatedPlayerIds.includes(p.id)
-      );
-      if (nextClueIdx >= activeForClues.length) {
-        return { ...state, cluePlayerIndex: nextClueIdx, phase: 'CLUE_REVIEW' };
-      }
-      return { ...state, cluePlayerIndex: nextClueIdx, phase: 'CLUE_PASS_DEVICE' };
-    }
-
-    case 'START_CLUE_REVIEW':
-      return { ...state, phase: 'CLUE_REVIEW' };
-
-    case 'START_CLUE_GIVE':
-      return { ...state, phase: 'CLUE_GIVE' };
 
     case 'RESTART_GAME':
       return {
@@ -194,8 +161,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         roundNumber: 1,
         maxRounds: 2,
         eliminatedPlayerIds: [],
-        clueWords: {},
-        cluePlayerIndex: 0,
       };
 
     case 'NEW_GAME':

@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface ProgressBarProps {
   progress: number; // 0-100
   color?: 'indigo' | 'green' | 'red' | 'amber' | 'white';

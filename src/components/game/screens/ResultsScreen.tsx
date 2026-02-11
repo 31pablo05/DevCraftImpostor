@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useGame } from '../GameProvider';
 import { calculateVotingResult } from '../../../lib/game/votingSystem';
 import { createGame } from '../../../lib/game/gameEngine';
@@ -174,10 +174,9 @@ export default function ResultsScreen() {
               <div className="flex justify-center gap-2 flex-wrap">
                 {result.tiedPlayerIds.map((id) => {
                   const player = state.players.find((p) => p.id === id);
-                  const isImpostor = state.impostorIndexes.includes(state.players.findIndex((p) => p.id === id));
                   return player ? (
                     <span key={id} className="text-base text-yellow-100 font-semibold px-3 py-1 bg-yellow-700/40 rounded-full">
-                      {isImpostor ? '🎭' : '👤'} {player.name}
+                      👤 {player.name}
                     </span>
                   ) : null;
                 })}
@@ -217,16 +216,11 @@ export default function ResultsScreen() {
               <div key={entry.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <PlayerBadge name={entry.name} size="sm" />
-                  {entry.isImpostor && (
-                    <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">
-                      Impostor
-                    </span>
-                  )}
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
                     <div
-                      className={`h-full rounded-full ${entry.isImpostor ? 'bg-emerald-500' : 'bg-red-500'}`}
+                      className="h-full rounded-full bg-indigo-500"
                       style={{ width: `${(entry.count / activePlayers.length) * 100}%` }}
                     />
                   </div>
@@ -253,8 +247,13 @@ export default function ResultsScreen() {
             </>
           ) : result.shouldContinue ? (
             <>
+              <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl mb-4">
+                <p className="text-sm text-amber-300 text-center">
+                  💡 <strong>Ronda 2:</strong> Cada jugador debe dar <strong>oralmente</strong> una palabra pista relacionada con la palabra secreta (si la conocen). El impostor debe inventar una pista convincente.
+                </p>
+              </div>
               <Button onClick={handleContinueNextRound} variant="primary" size="lg" fullWidth>
-                ➡️ Ronda 2: Palabras Pista
+                ➡️ Comenzar Ronda 2
               </Button>
               <Button onClick={handleGoHome} variant="ghost" size="md" fullWidth>
                 🏠 Abandonar partida

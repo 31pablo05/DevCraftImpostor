@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGame } from '../GameProvider';
 import { createGame, validateSettings } from '../../../lib/game/gameEngine';
 import { getAllWordPacks } from '../../../lib/storage/storage';

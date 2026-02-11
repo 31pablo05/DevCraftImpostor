@@ -1,3 +1,4 @@
+import React from 'react';
 import { useGame } from '../GameProvider';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
@@ -21,32 +22,29 @@ export default function DiscussionScreen() {
         <div className="text-7xl mb-6">🗣️</div>
 
         <h1 className="text-3xl font-black text-white mb-3">
-          ¡Hora de debatir!
+          {state.roundNumber === 2 ? '¡Última oportunidad!' : '¡Hora de debatir!'}
         </h1>
 
-        <p className="text-gray-300 mb-6 leading-relaxed">
-          {state.roundNumber === 2 
-            ? 'Revisen las palabras pista y discutan quién creen que es el impostor. ¡Es su última oportunidad!'
-            : 'Discutan entre todos quién creen que es el impostor. Hagan preguntas, den pistas, ¡pero no revelen la palabra!'}
-        </p>
-
-        {/* Mostrar palabras pista en ronda 2 si existen */}
-        {state.roundNumber === 2 && Object.keys(state.clueWords).length > 0 && (
-          <div className="mb-6 p-4 bg-white/5 rounded-xl border border-white/10">
-            <p className="text-xs text-gray-400 mb-3">Palabras pista:</p>
-            <div className="space-y-2">
-              {activePlayers.map((player) => {
-                const clue = state.clueWords[player.id];
-                if (!clue) return null;
-                return (
-                  <div key={player.id} className="flex justify-between items-center text-sm">
-                    <span className="text-gray-300">{player.name}:</span>
-                    <span className="text-purple-300 font-bold">{clue}</span>
-                  </div>
-                );
-              })}
+        {state.roundNumber === 2 ? (
+          <>
+            <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl">
+              <p className="text-sm text-amber-300 mb-3">
+                <strong>INSTRUCCIONES RONDA 2:</strong>
+              </p>
+              <ol className="text-left text-sm text-gray-300 space-y-2">
+                <li>1. Cada jugador debe decir <strong>oralmente</strong> una palabra pista relacionada con la palabra secreta.</li>
+                <li>2. El impostor debe inventar una pista convincente.</li>
+                <li>3. Después de escuchar todas las pistas, discutan quién es el impostor.</li>
+              </ol>
             </div>
-          </div>
+            <p className="text-gray-300 mb-6 leading-relaxed">
+              Cuando todos hayan dado su pista y estén listos, pasen a la votación final.
+            </p>
+          </>
+        ) : (
+          <p className="text-gray-300 mb-6 leading-relaxed">
+            Discutan entre todos quién creen que es el impostor. Hagan preguntas, den pistas, ¡pero no revelen la palabra!
+          </p>
         )}
 
         <div className="flex flex-wrap justify-center gap-2 mb-8">

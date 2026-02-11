@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useGame } from '../GameProvider';
 import { vibrate, VIBRATION_PATTERNS } from '../../../lib/utils/vibration';
 import { formatTime } from '../../../lib/utils/time';

@@ -5,8 +5,16 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react()],
+  integrations: [
+    react({
+      jsxImportSource: 'react',
+    })
+  ],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    esbuild: {
+      jsx: 'automatic',
+      jsxImportSource: 'react'
+    }
   }
 });

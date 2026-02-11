@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGame } from '../GameProvider';
 import { getPlayerRole } from '../../../lib/game/gameEngine';
 import { vibrate, VIBRATION_PATTERNS } from '../../../lib/utils/vibration';

@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface PlayerBadgeProps {
   name: string;
   selected?: boolean;

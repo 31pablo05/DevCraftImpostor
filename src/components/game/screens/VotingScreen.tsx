@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useGame } from '../GameProvider';
 import { vibrate, VIBRATION_PATTERNS } from '../../../lib/utils/vibration';
 import Button from '../ui/Button';

@@ -9,10 +9,7 @@ export type GamePhase =
   | 'VOTING'
   | 'RESULTS'
   | 'HOW_TO_PLAY'
-  | 'WORD_PACKS'
-  | 'CLUE_PASS_DEVICE'
-  | 'CLUE_GIVE'
-  | 'CLUE_REVIEW';
+  | 'WORD_PACKS';
 
 /** Jugador */
 export interface Player {
@@ -45,8 +42,6 @@ export interface GameState {
   roundNumber: number; // Número de ronda actual (1 o 2)
   maxRounds: number; // Máximo de rondas permitidas (siempre 2)
   eliminatedPlayerIds: string[]; // IDs de jugadores eliminados
-  clueWords: Record<string, string>; // {playerId: palabraPista} para ronda 2
-  cluePlayerIndex: number; // Índice del jugador actual dando pista
 }
 
 /** Pack de palabras */
@@ -76,10 +71,6 @@ export type GameAction =
   | { type: 'CAST_VOTE'; payload: { voterId: string; accusedId: string } }
   | { type: 'SHOW_RESULTS' }
   | { type: 'CONTINUE_NEXT_ROUND'; payload: { eliminatedPlayerId: string } }
-  | { type: 'START_CLUE_GIVE' }
-  | { type: 'SUBMIT_CLUE'; payload: { playerId: string; word: string } }
-  | { type: 'NEXT_CLUE_PLAYER' }
-  | { type: 'START_CLUE_REVIEW' }
   | { type: 'RESTART_GAME'; payload: { secretWord: string; impostorIndexes: number[] } }
   | { type: 'NEW_GAME' };
 

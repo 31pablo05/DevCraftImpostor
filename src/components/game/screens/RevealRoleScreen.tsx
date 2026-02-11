@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGame } from '../GameProvider';
 import { getPlayerRole } from '../../../lib/game/gameEngine';
 import { vibrate, VIBRATION_PATTERNS } from '../../../lib/utils/vibration';
@@ -28,9 +28,8 @@ export default function RevealRoleScreen() {
     dispatch({ type: 'NEXT_PLAYER' });
   };
 
-  const bg = isImpostor
-    ? 'from-red-950 via-red-900 to-gray-900'
-    : 'from-emerald-950 via-emerald-900 to-gray-900';
+  // Fondo neutro para todos los jugadores (no revelar rol por color)
+  const bg = 'from-gray-950 via-indigo-950 to-gray-900';
 
   return (
     <div className={`min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br ${bg}`}>
@@ -55,7 +54,7 @@ export default function RevealRoleScreen() {
 
             {isImpostor ? (
               <>
-                <h1 className="text-3xl font-black text-red-400 mb-3">
+                <h1 className="text-3xl font-black text-indigo-400 mb-3">
                   ¡Eres el Impostor!
                 </h1>
                 <p className="text-gray-300 mb-8 leading-relaxed">
@@ -68,7 +67,7 @@ export default function RevealRoleScreen() {
                 <h2 className="text-lg font-bold text-gray-300 mb-2">
                   La palabra secreta es:
                 </h2>
-                <p className="text-5xl font-black text-emerald-400 mb-4 break-words">
+                <p className="text-5xl font-black text-indigo-400 mb-4 break-words">
                   {state.secretWord}
                 </p>
                 <p className="text-gray-400 mb-8 leading-relaxed">
@@ -80,7 +79,7 @@ export default function RevealRoleScreen() {
 
             <Button
               onClick={handleContinue}
-              variant={isImpostor ? 'danger' : 'primary'}
+              variant="primary"
               size="lg"
               fullWidth
             >

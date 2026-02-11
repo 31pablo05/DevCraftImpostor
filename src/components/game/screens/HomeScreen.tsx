@@ -1,3 +1,4 @@
+import React from 'react';
 import { useGame } from '../GameProvider';
 import Button from '../ui/Button';
 import Logo from '../ui/Logo';
