@@ -42,7 +42,8 @@ export interface GameState {
   settings: GameSettings;
   gameId: string;
   startedAt: number | null;
-  roundNumber: number; // Número de ronda actual (máximo 2)
+  roundNumber: number; // Número de ronda actual (1 o 2)
+  maxRounds: number; // Máximo de rondas permitidas (siempre 2)
   eliminatedPlayerIds: string[]; // IDs de jugadores eliminados
   clueWords: Record<string, string>; // {playerId: palabraPista} para ronda 2
   cluePlayerIndex: number; // Índice del jugador actual dando pista
@@ -92,4 +93,6 @@ export interface VoteResult {
   voteCounts: Record<string, number>;
   shouldContinue: boolean; // Si el juego debe continuar con otra ronda
   activePlayersCount: number; // Jugadores activos después de la eliminación
+  isTie: boolean; // Si hay empate en la votación (múltiples jugadores con el máximo de votos)
+  tiedPlayerIds: string[]; // IDs de los jugadores empatados con el máximo de votos
 }

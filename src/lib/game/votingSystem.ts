@@ -3,6 +3,11 @@ import type { Player, VoteResult } from '../types/game.types';
 /**
  * Calcula el resultado de la votación.
  * roundNumber: ronda actual (1 o 2). Máximo 2 rondas.
+ * 
+ * REGLAS DE ELIMINACIÓN:
+ * - Solo se elimina el jugador con MAYOR cantidad de votos
+ * - Si hay empate en la mayor cantidad: NO se elimina nadie y se debe repetir votación
+ * - Solo se elimina un jugador por ronda
  */
 export function calculateVotingResult(
   votes: Record<string, string>,
@@ -11,45 +16,56 @@ export function calculateVotingResult(
   eliminatedPlayerIds: string[] = [],
   roundNumber: number = 1
 ): VoteResult {
-  // Contar votos por acusado
+  // Contar votos por acusado (solo jugadores activos)
   const voteCounts: Record<string, number> = {};
   Object.values(votes).forEach((accusedId) => {
     voteCounts[accusedId] = (voteCounts[accusedId] || 0) + 1;
   });
 
-  // Encontrar el más votado (en caso de empate, el primero encontrado)
-  let maxVotes = 0;
-  let accusedId = '';
+  // Encontrar el máximo de votos
+  const maxVotes = Math.max(...Object.values(voteCounts), 0);
+  
+  // Encontrar TODOS los jugadores con el máximo de votos
+  const tiedPlayerIds = Object.entries(voteCounts)
+    .filter(([_, count]) => count === maxVotes)
+    .map(([id]) => id);
 
-  Object.entries(voteCounts).forEach(([id, count]) => {
-    if (count > maxVotes) {
-      maxVotes = count;
-      accusedId = id;
-    }
-  });
+  // Verificar si hay empate: más de un jugador con el máximo de votos
+  const isTie = tiedPlayerIds.length > 1;
 
-  const accusedIndex = players.findIndex((p) => p.id === accusedId);
-  const wasImpostor = impostorIndexes.includes(accusedIndex);
-  const impostorsWon = !wasImpostor;
+  // Si hay empate, no se elimina a nadie
+  // Si no hay empate, se elimina al único con más votos
+  const accusedId = isTie ? '' : tiedPlayerIds[0] || '';
+  
+  const accusedIndex = accusedId ? players.findIndex((p) => p.id === accusedId) : -1;
+  const wasImpostor = accusedIndex >= 0 && impostorIndexes.includes(accusedIndex);
+  
+  // Si hay empate o no se elimina a nadie, los impostores NO ganan automáticamente
+  const impostorsWon = !isTie && !wasImpostor;
 
-  // Calcular jugadores activos después de esta eliminación
-  const activePlayersCount = players.length - eliminatedPlayerIds.length - 1;
+  // Calcular jugadores activos después de esta eliminación (solo si no hay empate)
+  const activePlayersCount = isTie 
+    ? players.length - eliminatedPlayerIds.length 
+    : players.length - eliminatedPlayerIds.length - 1;
 
-  // El juego continúa SOLO si:
-  // 1. Estamos en ronda 1 (máximo 2 intentos)
-  // 2. El impostor NO fue descubierto
-  // 3. Quedan más de 2 jugadores activos
-  const shouldContinue = roundNumber === 1 && impostorsWon && activePlayersCount > 2;
+  // El juego continúa a RONDA 2 SOLO si:
+  // 1. NO hay empate (se eliminó a alguien)
+  // 2. Estamos en ronda 1
+  // 3. El impostor NO fue descubierto
+  // 4. Quedan suficientes jugadores para continuar
+  const shouldContinue = !isTie && roundNumber === 1 && impostorsWon && activePlayersCount > 2;
 
   return {
     accusedId,
-    accusedName: players[accusedIndex]?.name ?? 'Desconocido',
+    accusedName: accusedIndex >= 0 ? players[accusedIndex].name : 'Empate',
     voteCount: maxVotes,
     wasImpostor,
     impostorsWon,
     voteCounts,
     shouldContinue,
     activePlayersCount,
+    isTie,
+    tiedPlayerIds,
   };
 }
 

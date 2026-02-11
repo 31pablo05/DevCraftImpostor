@@ -59,6 +59,14 @@ export default function ResultsScreen() {
     });
   };
 
+  const handleRepeatVoting = () => {
+    if (state.settings.vibrationEnabled) {
+      vibrate(VIBRATION_PATTERNS.voteSuccess);
+    }
+    // Reiniciar la votación sin eliminar a nadie
+    dispatch({ type: 'START_VOTING' });
+  };
+
   const handleNewGame = () => {
     dispatch({ type: 'NEW_GAME' });
   };
@@ -102,19 +110,23 @@ export default function ResultsScreen() {
           )}
 
           <div className="text-8xl mb-4">
-            {result.shouldContinue ? '⚠️' : result.impostorsWon ? '🎭' : '🎉'}
+            {result.isTie ? '🤝' : result.shouldContinue ? '⚠️' : result.impostorsWon ? '🎭' : '🎉'}
           </div>
 
           <h1
             className={`text-3xl font-black mb-2 
-              ${result.shouldContinue 
+              ${result.isTie
+                ? 'text-yellow-400'
+                : result.shouldContinue 
                 ? 'text-orange-400' 
                 : result.impostorsWon 
                 ? 'text-red-400' 
                 : 'text-emerald-400'
             }`}
           >
-            {result.shouldContinue 
+            {result.isTie
+              ? '¡Empate en la votación!'
+              : result.shouldContinue 
               ? '¡Eliminaron a un inocente!'
               : result.impostorsWon
               ? '¡Ganó el Impostor!'
@@ -122,7 +134,9 @@ export default function ResultsScreen() {
           </h1>
 
           <p className="text-gray-300 mb-6">
-            {result.shouldContinue
+            {result.isTie
+              ? `Hay ${result.tiedPlayerIds.length} jugadores empatados con ${result.voteCount} votos cada uno. Deben votar nuevamente.`
+              : result.shouldContinue
               ? `Eliminaron a ${result.accusedName} que era inocente. Tienen una última oportunidad en la Ronda 2.`
               : result.impostorsWon
               ? `${state.roundNumber === 1 ? 'Eliminaron' : 'Volvieron a eliminar'} a ${result.accusedName} que era inocente. El impostor ganó.`
@@ -130,7 +144,7 @@ export default function ResultsScreen() {
           </p>
 
           {/* Mostrar palabra secreta solo si el juego termina */}
-          {!result.shouldContinue && (
+          {!result.shouldContinue && !result.isTie && (
             <>
               <div className="p-4 bg-white/5 rounded-xl mb-4">
                 <p className="text-sm text-gray-400 mb-1">La palabra secreta era:</p>
@@ -153,6 +167,24 @@ export default function ResultsScreen() {
             </>
           )}
 
+          {/* Jugadores empatados en caso de empate */}
+          {result.isTie && (
+            <div className="mt-4 p-4 bg-yellow-900/30 rounded-xl border border-yellow-600">
+              <p className="text-sm text-yellow-300 mb-2 font-semibold">⚠️ Jugadores empatados con {result.voteCount} votos:</p>
+              <div className="flex justify-center gap-2 flex-wrap">
+                {result.tiedPlayerIds.map((id) => {
+                  const player = state.players.find((p) => p.id === id);
+                  const isImpostor = state.impostorIndexes.includes(state.players.findIndex((p) => p.id === id));
+                  return player ? (
+                    <span key={id} className="text-base text-yellow-100 font-semibold px-3 py-1 bg-yellow-700/40 rounded-full">
+                      {isImpostor ? '🎭' : '👤'} {player.name}
+                    </span>
+                  ) : null;
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Jugadores eliminados */}
           {state.eliminatedPlayerIds.length > 0 && (
             <div className="mt-4 p-3 bg-gray-800/50 rounded-xl border border-gray-700">
@@ -166,10 +198,12 @@ export default function ResultsScreen() {
                     </span>
                   ) : null;
                 })}
-                {/* Agregar el recién eliminado */}
-                <span className="text-sm text-gray-500">
-                  ❌ {result.accusedName}
-                </span>
+                {/* Agregar el recién eliminado solo si NO hay empate */}
+                {!result.isTie && result.accusedId && (
+                  <span className="text-sm text-gray-500">
+                    ❌ {result.accusedName}
+                  </span>
+                )}
               </div>
             </div>
           )}
@@ -205,7 +239,19 @@ export default function ResultsScreen() {
 
         {/* Acciones */}
         <div className="flex flex-col gap-3">
-          {result.shouldContinue ? (
+          {result.isTie ? (
+            <>
+              <Button onClick={handleRepeatVoting} variant="primary" size="lg" fullWidth>
+                🔁 Repetir votación
+              </Button>
+              <p className="text-center text-sm text-gray-400">
+                No se elimina a nadie. Voten nuevamente para desempatar.
+              </p>
+              <Button onClick={handleGoHome} variant="ghost" size="md" fullWidth>
+                🏠 Abandonar partida
+              </Button>
+            </>
+          ) : result.shouldContinue ? (
             <>
               <Button onClick={handleContinueNextRound} variant="primary" size="lg" fullWidth>
                 ➡️ Ronda 2: Palabras Pista

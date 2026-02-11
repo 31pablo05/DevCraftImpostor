@@ -37,6 +37,7 @@ function getInitialState(): GameState {
     gameId: '',
     startedAt: null,
     roundNumber: 1,
+    maxRounds: 2, // Siempre 2 rondas máximo
     eliminatedPlayerIds: [],
     clueWords: {},
     cluePlayerIndex: 0,
@@ -80,6 +81,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         gameId: crypto.randomUUID(),
         startedAt: Date.now(),
         roundNumber: 1,
+        maxRounds: 2,
         eliminatedPlayerIds: [],
         clueWords: {},
         cluePlayerIndex: 0,
@@ -190,6 +192,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         startedAt: Date.now(),
         players: state.players.map((p) => ({ ...p, isRevealed: false })),
         roundNumber: 1,
+        maxRounds: 2,
         eliminatedPlayerIds: [],
         clueWords: {},
         cluePlayerIndex: 0,
