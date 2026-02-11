@@ -1,31 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useGame } from '../GameProvider';
 import { getPlayerRole } from '../../../lib/game/gameEngine';
 import { vibrate, VIBRATION_PATTERNS } from '../../../lib/utils/vibration';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
+import Input from '../ui/Input';
 
-export default function RevealRoleScreen() {
+export default function ClueGiveScreen() {
   const { state, dispatch } = useGame();
+  const [clueWord, setClueWord] = useState('');
   const [revealed, setRevealed] = useState(false);
 
   const activePlayers = state.players.filter((p) => !state.eliminatedPlayerIds.includes(p.id));
-  const currentPlayer = activePlayers[state.currentPlayerIndex];
+  const currentPlayer = activePlayers[state.cluePlayerIndex];
   const currentPlayerGlobalIndex = state.players.findIndex((p) => p.id === currentPlayer.id);
-  
   const role = getPlayerRole(currentPlayerGlobalIndex, state.impostorIndexes);
   const isImpostor = role === 'impostor';
 
   useEffect(() => {
     if (state.settings.vibrationEnabled) {
-      vibrate(VIBRATION_PATTERNS.roleReveal);
+      vibrate([...VIBRATION_PATTERNS.roleReveal]);
     }
   }, []);
 
   const handleReveal = () => setRevealed(true);
 
-  const handleContinue = () => {
-    dispatch({ type: 'NEXT_PLAYER' });
+  const handleSubmit = () => {
+    if (!clueWord.trim()) return;
+
+    if (state.settings.vibrationEnabled) {
+      vibrate([...VIBRATION_PATTERNS.voteSuccess]);
+    }
+
+    dispatch({
+      type: 'SUBMIT_CLUE',
+      payload: { playerId: currentPlayer.id, word: clueWord.trim() },
+    });
+
+    dispatch({ type: 'NEXT_CLUE_PLAYER' });
   };
 
   const bg = isImpostor
@@ -41,50 +53,62 @@ export default function RevealRoleScreen() {
           <>
             <div className="text-8xl mb-6">🔒</div>
             <h2 className="text-xl text-white mb-6">
-              Tu rol está oculto. Toca para revelarlo.
+              Tu palabra está oculta. Toca para revelarla.
             </h2>
             <Button onClick={handleReveal} variant="secondary" size="lg" fullWidth>
-              👁 Revelar mi rol
+              👁 Ver mi palabra
             </Button>
           </>
         ) : (
           <div className="animate-fade-in">
-            <div className="text-8xl mb-6">
-              {isImpostor ? '🎭' : '✅'}
+            <div className="text-7xl mb-6">
+              {isImpostor ? '🎭' : '📝'}
             </div>
 
             {isImpostor ? (
               <>
-                <h1 className="text-3xl font-black text-red-400 mb-3">
+                <h1 className="text-2xl font-black text-red-400 mb-3">
                   ¡Eres el Impostor!
                 </h1>
-                <p className="text-gray-300 mb-8 leading-relaxed">
+                <p className="text-gray-300 mb-6 leading-relaxed text-sm">
                   No conoces la palabra secreta.<br />
-                  Intenta averiguarla sin que te descubran.
+                  Intenta dar una palabra que parezca relacionada.
                 </p>
               </>
             ) : (
               <>
-                <h2 className="text-lg font-bold text-gray-300 mb-2">
+                <h2 className="text-sm font-bold text-gray-400 mb-2">
                   La palabra secreta es:
                 </h2>
-                <p className="text-5xl font-black text-emerald-400 mb-4 break-words">
+                <p className="text-4xl font-black text-emerald-400 mb-4 break-words">
                   {state.secretWord}
                 </p>
-                <p className="text-gray-400 mb-8 leading-relaxed">
-                  Habla de ella sin revelarla directamente.<br />
-                  Encuentra al impostor.
+                <p className="text-gray-300 mb-6 leading-relaxed text-sm">
+                  Escribe una palabra relacionada (sin revelarla directamente).
                 </p>
               </>
             )}
 
+            <div className="mb-4">
+              <Input
+                type="text"
+                placeholder="Escribe tu pista..."
+                value={clueWord}
+                onChange={(e) => setClueWord(e.target.value)}
+                className="text-center text-lg"
+                maxLength={30}
+                autoFocus
+              />
+            </div>
+
             <Button
-              onClick={handleContinue}
+              onClick={handleSubmit}
               variant={isImpostor ? 'danger' : 'primary'}
               size="lg"
               fullWidth
+              disabled={!clueWord.trim()}
             >
-              Ocultar y continuar →
+              ✅ Confirmar pista
             </Button>
           </div>
         )}

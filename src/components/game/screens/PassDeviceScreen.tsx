@@ -4,8 +4,9 @@ import Card from '../ui/Card';
 
 export default function PassDeviceScreen() {
   const { state, dispatch } = useGame();
-  const currentPlayer = state.players[state.currentPlayerIndex];
-  const progress = ((state.currentPlayerIndex + 1) / state.players.length) * 100;
+  const activePlayers = state.players.filter((p) => !state.eliminatedPlayerIds.includes(p.id));
+  const currentPlayer = activePlayers[state.currentPlayerIndex];
+  const progress = ((state.currentPlayerIndex + 1) / activePlayers.length) * 100;
 
   const handleReady = () => {
     dispatch({ type: 'REVEAL_CURRENT_ROLE' });
@@ -14,10 +15,19 @@ export default function PassDeviceScreen() {
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
       <Card className="text-center max-w-md w-full" glass>
+        {/* Ronda */}
+        {state.roundNumber > 1 && (
+          <div className="mb-4 p-2 bg-white/10 rounded-lg">
+            <p className="text-sm text-gray-300">
+              🔄 Ronda {state.roundNumber}
+            </p>
+          </div>
+        )}
+
         {/* Progreso */}
         <div className="mb-6">
           <div className="flex justify-between text-xs text-gray-400 mb-1">
-            <span>Jugador {state.currentPlayerIndex + 1} de {state.players.length}</span>
+            <span>Jugador {state.currentPlayerIndex + 1} de {activePlayers.length}</span>
             <span>{Math.round(progress)}%</span>
           </div>
           <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">

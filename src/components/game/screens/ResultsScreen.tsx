@@ -13,11 +13,18 @@ export default function ResultsScreen() {
   const { state, dispatch } = useGame();
 
   const result = useMemo(
-    () => calculateVotingResult(state.votes, state.players, state.impostorIndexes),
-    [state.votes, state.players, state.impostorIndexes]
+    () => calculateVotingResult(
+      state.votes,
+      state.players,
+      state.impostorIndexes,
+      state.eliminatedPlayerIds,
+      state.roundNumber
+    ),
+    [state.votes, state.players, state.impostorIndexes, state.eliminatedPlayerIds, state.roundNumber]
   );
 
   const impostorNames = state.impostorIndexes.map((i) => state.players[i]?.name).filter(Boolean);
+  const activePlayers = state.players.filter((p) => !state.eliminatedPlayerIds.includes(p.id));
 
   useEffect(() => {
     if (state.settings.vibrationEnabled) {
@@ -39,6 +46,16 @@ export default function ResultsScreen() {
     dispatch({
       type: 'RESTART_GAME',
       payload: { secretWord, impostorIndexes },
+    });
+  };
+
+  const handleContinueNextRound = () => {
+    if (state.settings.vibrationEnabled) {
+      vibrate(VIBRATION_PATTERNS.voteSuccess);
+    }
+    dispatch({
+      type: 'CONTINUE_NEXT_ROUND',
+      payload: { eliminatedPlayerId: result.accusedId },
     });
   };
 
@@ -76,50 +93,91 @@ export default function ResultsScreen() {
       <div className="max-w-lg mx-auto py-8 space-y-5">
         {/* Resultado principal */}
         <Card className="text-center" glass>
+          {state.roundNumber > 1 && (
+            <div className="mb-4 p-2 bg-white/10 rounded-lg">
+              <p className="text-sm text-gray-300">
+                🔄 Ronda {state.roundNumber}
+              </p>
+            </div>
+          )}
+
           <div className="text-8xl mb-4">
-            {result.impostorsWon ? '🎭' : '🎉'}
+            {result.shouldContinue ? '⚠️' : result.impostorsWon ? '🎭' : '🎉'}
           </div>
 
           <h1
-            className={`text-3xl font-black mb-2 ${
-              result.impostorsWon ? 'text-red-400' : 'text-emerald-400'
+            className={`text-3xl font-black mb-2 
+              ${result.shouldContinue 
+                ? 'text-orange-400' 
+                : result.impostorsWon 
+                ? 'text-red-400' 
+                : 'text-emerald-400'
             }`}
           >
-            {result.impostorsWon
+            {result.shouldContinue 
+              ? '¡Eliminaron a un inocente!'
+              : result.impostorsWon
               ? '¡Ganó el Impostor!'
               : '¡Ganaron los Civiles!'}
           </h1>
 
           <p className="text-gray-300 mb-6">
-            {result.impostorsWon
-              ? `Eliminaron a ${result.accusedName} que era inocente.`
-              : `Descubrieron a ${result.accusedName} como impostor.`}
+            {result.shouldContinue
+              ? `Eliminaron a ${result.accusedName} que era inocente. Tienen una última oportunidad en la Ronda 2.`
+              : result.impostorsWon
+              ? `${state.roundNumber === 1 ? 'Eliminaron' : 'Volvieron a eliminar'} a ${result.accusedName} que era inocente. El impostor ganó.`
+              : `¡Descubrieron a ${result.accusedName} como impostor!`}
           </p>
 
-          {/* Palabra secreta */}
-          <div className="p-4 bg-white/5 rounded-xl mb-4">
-            <p className="text-sm text-gray-400 mb-1">La palabra secreta era:</p>
-            <p className="text-3xl font-black text-indigo-400">{state.secretWord}</p>
-          </div>
+          {/* Mostrar palabra secreta solo si el juego termina */}
+          {!result.shouldContinue && (
+            <>
+              <div className="p-4 bg-white/5 rounded-xl mb-4">
+                <p className="text-sm text-gray-400 mb-1">La palabra secreta era:</p>
+                <p className="text-3xl font-black text-indigo-400">{state.secretWord}</p>
+              </div>
 
-          {/* Impostores */}
-          <div className="p-4 bg-white/5 rounded-xl">
-            <p className="text-sm text-gray-400 mb-2">
-              {impostorNames.length > 1 ? 'Los impostores eran:' : 'El impostor era:'}
-            </p>
-            <div className="flex justify-center gap-3 flex-wrap">
-              {impostorNames.map((name) => (
-                <span key={name} className="text-lg font-bold text-red-400">
-                  🎭 {name}
+              {/* Impostores */}
+              <div className="p-4 bg-white/5 rounded-xl">
+                <p className="text-sm text-gray-400 mb-2">
+                  {impostorNames.length > 1 ? 'Los impostores eran:' : 'El impostor era:'}
+                </p>
+                <div className="flex justify-center gap-3 flex-wrap">
+                  {impostorNames.map((name) => (
+                    <span key={name} className="text-lg font-bold text-red-400">
+                      🎭 {name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Jugadores eliminados */}
+          {state.eliminatedPlayerIds.length > 0 && (
+            <div className="mt-4 p-3 bg-gray-800/50 rounded-xl border border-gray-700">
+              <p className="text-xs text-gray-400 mb-2">Jugadores eliminados:</p>
+              <div className="flex justify-center gap-2 flex-wrap">
+                {state.eliminatedPlayerIds.map((id) => {
+                  const player = state.players.find((p) => p.id === id);
+                  return player ? (
+                    <span key={id} className="text-sm text-gray-500">
+                      ❌ {player.name}
+                    </span>
+                  ) : null;
+                })}
+                {/* Agregar el recién eliminado */}
+                <span className="text-sm text-gray-500">
+                  ❌ {result.accusedName}
                 </span>
-              ))}
+              </div>
             </div>
-          </div>
+          )}
         </Card>
 
         {/* Desglose de votos */}
         <Card>
-          <h3 className="text-lg font-semibold text-white mb-3">📊 Votos</h3>
+          <h3 className="text-lg font-semibold text-white mb-3">📊 Votos de esta ronda</h3>
           <div className="space-y-2">
             {voteBreakdown.map((entry) => (
               <div key={entry.name} className="flex items-center justify-between">
@@ -135,7 +193,7 @@ export default function ResultsScreen() {
                   <div className="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full ${entry.isImpostor ? 'bg-emerald-500' : 'bg-red-500'}`}
-                      style={{ width: `${(entry.count / state.players.length) * 100}%` }}
+                      style={{ width: `${(entry.count / activePlayers.length) * 100}%` }}
                     />
                   </div>
                   <span className="text-sm text-gray-400 w-8 text-right">{entry.count}</span>
@@ -147,15 +205,28 @@ export default function ResultsScreen() {
 
         {/* Acciones */}
         <div className="flex flex-col gap-3">
-          <Button onClick={handlePlayAgain} variant="primary" size="lg" fullWidth>
-            🔄 Jugar otra vez (mismos jugadores)
-          </Button>
-          <Button onClick={handleNewGame} variant="secondary" size="md" fullWidth>
-            ⚙️ Nueva configuración
-          </Button>
-          <Button onClick={handleGoHome} variant="ghost" size="md" fullWidth>
-            🏠 Volver al inicio
-          </Button>
+          {result.shouldContinue ? (
+            <>
+              <Button onClick={handleContinueNextRound} variant="primary" size="lg" fullWidth>
+                ➡️ Ronda 2: Palabras Pista
+              </Button>
+              <Button onClick={handleGoHome} variant="ghost" size="md" fullWidth>
+                🏠 Abandonar partida
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button onClick={handlePlayAgain} variant="primary" size="lg" fullWidth>
+                🔄 Jugar otra vez (mismos jugadores)
+              </Button>
+              <Button onClick={handleNewGame} variant="secondary" size="md" fullWidth>
+                ⚙️ Nueva configuración
+              </Button>
+              <Button onClick={handleGoHome} variant="ghost" size="md" fullWidth>
+                🏠 Volver al inicio
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </div>

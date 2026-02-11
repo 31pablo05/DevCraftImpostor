@@ -36,6 +36,10 @@ function getInitialState(): GameState {
     settings: { ...defaultSettings, ...persisted },
     gameId: '',
     startedAt: null,
+    roundNumber: 1,
+    eliminatedPlayerIds: [],
+    clueWords: {},
+    cluePlayerIndex: 0,
   };
 }
 
@@ -75,6 +79,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         votes: {},
         gameId: crypto.randomUUID(),
         startedAt: Date.now(),
+        roundNumber: 1,
+        eliminatedPlayerIds: [],
+        clueWords: {},
+        cluePlayerIndex: 0,
       };
 
     case 'REVEAL_CURRENT_ROLE':
@@ -88,7 +96,12 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
     case 'NEXT_PLAYER': {
       const nextIndex = state.currentPlayerIndex + 1;
-      if (nextIndex >= state.players.length) {
+      // Filtrar jugadores activos (no eliminados)
+      const activePlayers = state.players.filter(
+        (p) => !state.eliminatedPlayerIds.includes(p.id)
+      );
+      
+      if (nextIndex >= activePlayers.length) {
         // Todos han visto su rol → discusión (timer o libre)
         return {
           ...state,
@@ -127,6 +140,44 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case 'SHOW_RESULTS':
       return { ...state, phase: 'RESULTS' };
 
+    case 'CONTINUE_NEXT_ROUND':
+      return {
+        ...state,
+        phase: 'CLUE_PASS_DEVICE',
+        roundNumber: 2,
+        eliminatedPlayerIds: [...state.eliminatedPlayerIds, action.payload.eliminatedPlayerId],
+        votes: {},
+        clueWords: {},
+        cluePlayerIndex: 0,
+        currentPlayerIndex: 0,
+      };
+
+    case 'SUBMIT_CLUE':
+      return {
+        ...state,
+        clueWords: {
+          ...state.clueWords,
+          [action.payload.playerId]: action.payload.word,
+        },
+      };
+
+    case 'NEXT_CLUE_PLAYER': {
+      const nextClueIdx = state.cluePlayerIndex + 1;
+      const activeForClues = state.players.filter(
+        (p) => !state.eliminatedPlayerIds.includes(p.id)
+      );
+      if (nextClueIdx >= activeForClues.length) {
+        return { ...state, cluePlayerIndex: nextClueIdx, phase: 'CLUE_REVIEW' };
+      }
+      return { ...state, cluePlayerIndex: nextClueIdx, phase: 'CLUE_PASS_DEVICE' };
+    }
+
+    case 'START_CLUE_REVIEW':
+      return { ...state, phase: 'CLUE_REVIEW' };
+
+    case 'START_CLUE_GIVE':
+      return { ...state, phase: 'CLUE_GIVE' };
+
     case 'RESTART_GAME':
       return {
         ...state,
@@ -138,6 +189,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         gameId: crypto.randomUUID(),
         startedAt: Date.now(),
         players: state.players.map((p) => ({ ...p, isRevealed: false })),
+        roundNumber: 1,
+        eliminatedPlayerIds: [],
+        clueWords: {},
+        cluePlayerIndex: 0,
       };
 
     case 'NEW_GAME':

@@ -11,7 +11,9 @@ export default function VotingScreen() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showPassDevice, setShowPassDevice] = useState(true);
 
-  const voter = state.players[currentVoterIdx];
+  // Filtrar jugadores activos (no eliminados)
+  const activePlayers = state.players.filter((p) => !state.eliminatedPlayerIds.includes(p.id));
+  const voter = activePlayers[currentVoterIdx];
   const totalVotes = Object.keys(state.votes).length;
 
   const handleVote = () => {
@@ -26,7 +28,7 @@ export default function VotingScreen() {
       payload: { voterId: voter.id, accusedId: selectedId },
     });
 
-    if (currentVoterIdx < state.players.length - 1) {
+    if (currentVoterIdx < activePlayers.length - 1) {
       setCurrentVoterIdx((i) => i + 1);
       setSelectedId(null);
       setShowPassDevice(true);
@@ -40,9 +42,17 @@ export default function VotingScreen() {
     return (
       <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-red-950 to-gray-900">
         <Card className="text-center max-w-md w-full" glass>
+          {state.roundNumber > 1 && (
+            <div className="mb-3 p-2 bg-white/10 rounded-lg">
+              <p className="text-xs text-gray-300">
+                🔄 Ronda {state.roundNumber} | {activePlayers.length} jugadores activos
+              </p>
+            </div>
+          )}
+
           <div className="text-6xl mb-4">🗳️</div>
           <p className="text-gray-400 text-sm mb-2">
-            Voto {totalVotes + 1} de {state.players.length}
+            Voto {totalVotes + 1} de {activePlayers.length}
           </p>
           <h2 className="text-2xl font-bold text-white mb-2">Pasa el móvil a</h2>
           <p className="text-4xl font-black text-red-400 mb-6">{voter.name}</p>
@@ -70,8 +80,13 @@ export default function VotingScreen() {
         <Card>
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-white">🗳️ Votación</h2>
-            <span className="text-sm text-gray-400">{totalVotes + 1}/{state.players.length}</span>
+            <div>
+              <h2 className="text-xl font-bold text-white">🗳️ Votación</h2>
+              {state.roundNumber > 1 && (
+                <p className="text-xs text-gray-400 mt-1">Ronda {state.roundNumber}</p>
+              )}
+            </div>
+            <span className="text-sm text-gray-400">{totalVotes + 1}/{activePlayers.length}</span>
           </div>
 
           <p className="text-gray-300 mb-6">
@@ -80,7 +95,7 @@ export default function VotingScreen() {
 
           {/* Grid de jugadores */}
           <div className="grid grid-cols-2 gap-3 mb-6">
-            {state.players
+            {activePlayers
               .filter((p) => p.id !== voter.id)
               .map((player) => (
                 <button

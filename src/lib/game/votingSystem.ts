@@ -2,11 +2,14 @@ import type { Player, VoteResult } from '../types/game.types';
 
 /**
  * Calcula el resultado de la votación.
+ * roundNumber: ronda actual (1 o 2). Máximo 2 rondas.
  */
 export function calculateVotingResult(
   votes: Record<string, string>,
   players: Player[],
-  impostorIndexes: number[]
+  impostorIndexes: number[],
+  eliminatedPlayerIds: string[] = [],
+  roundNumber: number = 1
 ): VoteResult {
   // Contar votos por acusado
   const voteCounts: Record<string, number> = {};
@@ -29,6 +32,15 @@ export function calculateVotingResult(
   const wasImpostor = impostorIndexes.includes(accusedIndex);
   const impostorsWon = !wasImpostor;
 
+  // Calcular jugadores activos después de esta eliminación
+  const activePlayersCount = players.length - eliminatedPlayerIds.length - 1;
+
+  // El juego continúa SOLO si:
+  // 1. Estamos en ronda 1 (máximo 2 intentos)
+  // 2. El impostor NO fue descubierto
+  // 3. Quedan más de 2 jugadores activos
+  const shouldContinue = roundNumber === 1 && impostorsWon && activePlayersCount > 2;
+
   return {
     accusedId,
     accusedName: players[accusedIndex]?.name ?? 'Desconocido',
@@ -36,6 +48,8 @@ export function calculateVotingResult(
     wasImpostor,
     impostorsWon,
     voteCounts,
+    shouldContinue,
+    activePlayersCount,
   };
 }
 
