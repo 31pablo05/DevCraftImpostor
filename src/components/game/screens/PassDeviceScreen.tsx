@@ -14,7 +14,7 @@ export default function PassDeviceScreen() {
   };
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
+    <div className="min-h-dvh flex flex-col items-center justify-center p-6">
       <Card className="text-center max-w-md w-full" glass>
         {/* Ronda */}
         {state.roundNumber > 1 && (

@@ -14,7 +14,7 @@ export default function CluePassDeviceScreen() {
   };
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-amber-950 to-gray-900">
+    <div className="min-h-dvh flex flex-col items-center justify-center p-6">
       <Card className="text-center max-w-md w-full" glass>
         <div className="mb-4 p-2 bg-white/10 rounded-lg">
           <p className="text-sm text-gray-300">

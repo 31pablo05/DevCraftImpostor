@@ -40,7 +40,7 @@ export default function VotingScreen() {
   // Pantalla intermedia: pasa el dispositivo
   if (showPassDevice) {
     return (
-      <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-red-950 to-gray-900">
+      <div className="min-h-dvh flex flex-col items-center justify-center p-6">
         <Card className="text-center max-w-md w-full" glass>
           {state.roundNumber > 1 && (
             <div className="mb-3 p-2 bg-white/10 rounded-lg">
@@ -75,7 +75,7 @@ export default function VotingScreen() {
   }
 
   return (
-    <div className="min-h-dvh p-4 bg-gradient-to-br from-gray-900 via-red-950 to-gray-900">
+    <div className="min-h-dvh p-4">
       <div className="max-w-lg mx-auto py-6">
         <Card>
           {/* Header */}

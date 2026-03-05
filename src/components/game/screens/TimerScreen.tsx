@@ -42,7 +42,7 @@ export default function TimerScreen() {
   const progressColor = progress > 40 ? 'white' : progress > 15 ? 'amber' : 'red';
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900">
+    <div className="min-h-dvh flex flex-col items-center justify-center p-6">
       <div className="text-center w-full max-w-sm">
         {/* Reloj */}
         <div className={`text-8xl font-black text-white mb-6 tabular-nums ${secondsLeft <= 10 && total > 0 ? 'animate-pulse text-red-400' : ''}`}>

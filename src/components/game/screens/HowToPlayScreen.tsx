@@ -56,7 +56,7 @@ export default function HowToPlayScreen() {
   const { dispatch } = useGame();
 
   return (
-    <div className="min-h-dvh bg-gradient-to-br from-gray-900 via-gray-900 to-indigo-950 p-4">
+    <div className="min-h-dvh p-4">
       <div className="max-w-lg mx-auto py-6">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">

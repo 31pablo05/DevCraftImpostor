@@ -91,13 +91,7 @@ export default function ResultsScreen() {
   }, [state.votes, state.players, state.impostorIndexes]);
 
   return (
-    <div
-      className={`min-h-dvh p-4 bg-gradient-to-br ${
-        result.impostorsWon
-          ? 'from-red-950 via-red-900 to-gray-900'
-          : 'from-emerald-950 via-emerald-900 to-gray-900'
-      }`}
-    >
+    <div className="min-h-dvh p-4">
       <div className="max-w-lg mx-auto py-8 space-y-5">
         {/* Resultado principal */}
         <Card className="text-center" glass>

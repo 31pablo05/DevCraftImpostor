@@ -75,7 +75,7 @@ export default function SetupScreen() {
   const selectedPack = packs.find((p) => p.id === state.settings.categoryId);
 
   return (
-    <div className="min-h-dvh bg-gradient-to-br from-gray-900 via-gray-900 to-indigo-950 p-4 pb-32">
+    <div className="min-h-dvh p-4 pb-32">
       <div className="max-w-lg mx-auto py-6">
 
         {/* Header */}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useGame } from '../GameProvider';
 import Button from '../ui/Button';
-import Logo from '../ui/Logo';
 import { useInstallPWA } from '../../../hooks/useInstallPWA';
 
 export default function HomeScreen() {
@@ -9,18 +8,13 @@ export default function HomeScreen() {
   const { canInstall, isInstalled, isInstalling, isIOS, showIOSGuide, setShowIOSGuide, install } = useInstallPWA();
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-start gap-6 py-8 px-6 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 overflow-y-auto">
-      {/* Logo / Título */}
-      <div className="text-center animate-fade-in flex flex-col items-center flex-shrink-0 pt-2">
-        <div className="relative flex items-center justify-center mb-3">
-          <div className="absolute w-[50vw] h-[50vw] max-w-[280px] max-h-[280px] rounded-full bg-indigo-700/20 blur-3xl animate-pulse" />
-          <div className="absolute w-[35vw] h-[35vw] max-w-[180px] max-h-[180px] rounded-full bg-violet-500/15 blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
-          <Logo size="hero" className="relative animate-float" />
-        </div>
-        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-1">
+    <div className="min-h-dvh flex flex-col items-center justify-center gap-6 py-8 px-6 overflow-y-auto">
+      {/* Título */}
+      <div className="text-center animate-fade-in flex flex-col items-center flex-shrink-0">
+        <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-2">
           El Impostor
         </h1>
-        <p className="text-sm sm:text-base font-medium text-indigo-300 tracking-wide">
+        <p className="text-base sm:text-lg font-medium text-indigo-300 tracking-wide">
           ¿Podrás descubrir quién miente?
         </p>
       </div>
