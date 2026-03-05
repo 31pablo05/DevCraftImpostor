@@ -32,7 +32,7 @@ export default function RevealRoleScreen() {
   const bg = 'from-gray-950 via-indigo-950 to-gray-900';
 
   return (
-      className={`min-h-dvh flex flex-col items-center justify-center p-5 bg-gradient-to-br ${bg}`}>
+    <div className={`min-h-dvh flex flex-col items-center justify-center p-5 bg-gradient-to-br ${bg}`}>
       <Card className="text-center max-w-md w-full" glass>
         <p className="text-sm text-gray-400 mb-4">{currentPlayer.name}</p>
 
