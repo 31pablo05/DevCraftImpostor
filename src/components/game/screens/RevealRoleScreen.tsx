@@ -32,7 +32,7 @@ export default function RevealRoleScreen() {
   const bg = 'from-gray-950 via-indigo-950 to-gray-900';
 
   return (
-    <div className={`min-h-dvh flex flex-col items-center justify-center p-6 bg-gradient-to-br ${bg}`}>
+      className={`min-h-dvh flex flex-col items-center justify-center p-5 bg-gradient-to-br ${bg}`}>
       <Card className="text-center max-w-md w-full" glass>
         <p className="text-sm text-gray-400 mb-4">{currentPlayer.name}</p>
 
@@ -48,16 +48,32 @@ export default function RevealRoleScreen() {
           </>
         ) : (
           <div className="animate-fade-in">
-            <div className="text-8xl mb-6">
-              {isImpostor ? '🎭' : '✅'}
+            <div className="flex items-center justify-center mb-6">
+              {isImpostor ? (
+                <div className="relative flex items-center justify-center">
+                  <div className="absolute w-48 h-48 rounded-full bg-indigo-600/20 blur-2xl animate-pulse" />
+                  <div className="absolute w-36 h-36 rounded-full bg-violet-500/15 blur-xl animate-pulse" style={{ animationDelay: '0.5s' }} />
+                  <img
+                    src="/logo/impostordev2.svg"
+                    alt="El Impostor"
+                    className="relative w-40 h-40 object-contain animate-float animate-impostor-glow"
+                    draggable={false}
+                  />
+                </div>
+              ) : (
+                <span className="text-8xl">✅</span>
+              )}
             </div>
 
             {isImpostor ? (
               <>
-                <h1 className="text-3xl font-black text-indigo-400 mb-3">
+                <h1 className="text-3xl font-black tracking-tight mb-1" style={{ background: 'linear-gradient(135deg, #a78bfa, #6366f1, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   ¡Eres el Impostor!
                 </h1>
-                <p className="text-gray-300 mb-8 leading-relaxed">
+                <p className="text-sm font-semibold text-violet-400 uppercase tracking-widest mb-4">
+                  Mantén la calma 🎭
+                </p>
+                <p className="text-gray-400 mb-8 leading-relaxed text-sm sm:text-base">
                   No conoces la palabra secreta.<br />
                   Intenta averiguarla sin que te descubran.
                 </p>

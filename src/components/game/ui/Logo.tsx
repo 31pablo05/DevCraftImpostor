@@ -26,9 +26,9 @@ export default function Logo({
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <img
-        src="/logo/impostorlogo2.svg"
+        src="/logo/impostordev1.svg"
         alt="El Impostor"
-        className={`${sizeMap[size]} rounded-xl object-contain drop-shadow-lg`}
+        className={`${sizeMap[size]} object-contain drop-shadow-lg`}
         draggable={false}
       />
       {withText && (
