@@ -1,6 +1,7 @@
-const CACHE_NAME = 'impostor-v8';
+const CACHE_NAME = 'impostor-v9';
 const ASSETS = [
   '/manifest.json',
+  '/logo/impostormobile3.svg',
   '/logo/mobileimpostor1.svg',
   '/logo/impostordev1.svg',
   '/logo/impostordev2.svg',
