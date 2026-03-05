@@ -30,14 +30,17 @@ export default function ScreenRouter() {
   return (
     <div className="relative min-h-dvh">
       {/* Fondo global del juego */}
-      <div className="fixed inset-0 z-0 pointer-events-none select-none" aria-hidden="true">
-        <img
-          src="/logo/impostormobile3.svg"
-          alt=""
-          className="w-full h-full object-cover opacity-15"
-          draggable={false}
-        />
-      </div>
+      <div 
+        className="fixed inset-0 z-0 pointer-events-none select-none bg-gray-900" 
+        aria-hidden="true"
+        style={{
+          backgroundImage: 'url(/logo/impostormobile3.svg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.2
+        }}
+      />
       {/* Pantalla activa */}
       <div className="relative z-10">
         <Screen />
