@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGame } from '../GameProvider';
 import Button from '../ui/Button';
+import Logo from '../ui/Logo';
 import { useInstallPWA } from '../../../hooks/useInstallPWA';
 
 export default function HomeScreen() {
@@ -8,111 +9,73 @@ export default function HomeScreen() {
   const { canInstall, isInstalled, isInstalling, isIOS, showIOSGuide, setShowIOSGuide, install } = useInstallPWA();
 
   return (
-    <div className="min-h-dvh flex flex-col bg-gradient-to-b from-gray-950 via-indigo-950 to-gray-900 overflow-y-auto">
-
-      {/* Hero image — ocupa todo el ancho, ~60% de la pantalla en mobile */}
-      <div className="relative w-full flex-shrink-0" style={{ height: '60dvh' }}>
-        {/* Glow de fondo */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[80vw] h-[80vw] max-w-[420px] max-h-[420px] rounded-full bg-indigo-700/25 blur-3xl animate-pulse" />
-          <div className="absolute w-[55vw] h-[55vw] max-w-[280px] max-h-[280px] rounded-full bg-violet-500/20 blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
+    <div className="min-h-dvh flex flex-col items-center justify-start gap-6 py-8 px-6 bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 overflow-y-auto">
+      {/* Logo / Título */}
+      <div className="text-center animate-fade-in flex flex-col items-center flex-shrink-0 pt-2">
+        <div className="relative flex items-center justify-center mb-3">
+          <div className="absolute w-[50vw] h-[50vw] max-w-[280px] max-h-[280px] rounded-full bg-indigo-700/20 blur-3xl animate-pulse" />
+          <div className="absolute w-[35vw] h-[35vw] max-w-[180px] max-h-[180px] rounded-full bg-violet-500/15 blur-2xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <Logo size="hero" className="relative animate-float" />
         </div>
-        {/* Imagen principal */}
-        <img
-          src="/logo/mobileimpostor1.svg"
-          alt="El Impostor"
-          className="relative w-full h-full object-contain animate-float"
-          draggable={false}
-        />
-        {/* Degradado inferior para transición suave */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none" />
+        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-1">
+          El Impostor
+        </h1>
+        <p className="text-sm sm:text-base font-medium text-indigo-300 tracking-wide">
+          ¿Podrás descubrir quién miente?
+        </p>
       </div>
 
-      {/* Título + botones — parte inferior */}
-      <div className="flex flex-col items-center gap-4 px-6 pb-8 pt-2 animate-fade-in">
-        <div className="text-center">
-          <h1 className="text-4xl font-black text-white tracking-tight mb-1">
-            El Impostor
-          </h1>
-          <p className="text-sm font-medium text-indigo-300 tracking-wide">
-            ¿Podrás descubrir quién miente?
-          </p>
-        </div>
+      {/* Acciones principales */}
+      <div className="w-full max-w-xs flex flex-col gap-3 animate-fade-in flex-shrink-0">
+        <Button
+          onClick={() => dispatch({ type: 'START_SETUP' })}
+          variant="primary"
+          size="lg"
+          fullWidth
+        >
+          🚀 Nueva partida
+        </Button>
 
-        {/* Acciones principales */}
-        <div className="w-full max-w-xs flex flex-col gap-3">
-          <Button
-            onClick={() => dispatch({ type: 'START_SETUP' })}
-            variant="primary"
-            size="lg"
-            fullWidth
+        <Button
+          onClick={() => dispatch({ type: 'SHOW_HOW_TO_PLAY' })}
+          variant="secondary"
+          size="lg"
+          fullWidth
+        >
+          📖 Cómo jugar
+        </Button>
+
+        <Button
+          onClick={() => dispatch({ type: 'SHOW_WORD_PACKS' })}
+          variant="ghost"
+          size="md"
+          fullWidth
+        >
+          📦 Categorías de palabras
+        </Button>
+
+        {/* Botón instalar PWA */}
+        {canInstall && (
+          <button
+            onClick={install}
+            disabled={isInstalling}
+            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3.5 px-6 rounded-xl text-base shadow-lg shadow-green-500/25 hover:from-green-700 hover:to-emerald-700 active:scale-95 transition-all disabled:opacity-50 animate-pulse"
           >
-            🚀 Nueva partida
-          </Button>
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v12m0 0l-4-4m4 4l4-4" />
+            </svg>
+            {isInstalling ? 'Instalando...' : '📲 Instalar en mi celular'}
+          </button>
+        )}
 
-          <Button
-            onClick={() => dispatch({ type: 'SHOW_HOW_TO_PLAY' })}
-            variant="secondary"
-            size="lg"
-            fullWidth
-          >
-            📖 Cómo jugar
-          </Button>
-
-          <Button
-            onClick={() => dispatch({ type: 'SHOW_WORD_PACKS' })}
-            variant="ghost"
-            size="md"
-            fullWidth
-          >
-            📦 Categorías de palabras
-          </Button>
-
-          {/* Botón instalar PWA */}
-          {canInstall && (
-            <button
-              onClick={install}
-              disabled={isInstalling}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3.5 px-6 rounded-xl text-base shadow-lg shadow-green-500/25 hover:from-green-700 hover:to-emerald-700 active:scale-95 transition-all disabled:opacity-50 animate-pulse"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v12m0 0l-4-4m4 4l4-4" />
-              </svg>
-              {isInstalling ? 'Instalando...' : '📲 Instalar en mi celular'}
-            </button>
-          )}
-
-          {isInstalled && (
-            <div className="w-full flex items-center justify-center gap-2 text-green-400 text-sm py-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-              App instalada
-            </div>
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="flex flex-col items-center gap-3 pt-1">
-          <p className="text-xs text-gray-500">
-            100% offline · Sin cuentas · Un solo dispositivo
-          </p>
-          <a
-            href="https://devcraftpablo.online/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full py-2 px-4 hover:bg-white/10 hover:border-indigo-500/30 transition-all group"
-          >
-            <img
-              src="/logo/devcraft-logo.png"
-              alt="DevCraft"
-              className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-indigo-400/50 transition-all"
-            />
-            <span className="text-xs text-gray-300 group-hover:text-white transition-colors">
-              Más proyectos en <span className="font-semibold text-indigo-400 group-hover:text-indigo-300">devcraftpablo.online</span>
-            </span>
-          </a>
-        </div>
+        {isInstalled && (
+          <div className="w-full flex items-center justify-center gap-2 text-green-400 text-sm py-2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            App instalada
+          </div>
+        )}
       </div>
 
       {/* Guía iOS */}
@@ -143,6 +106,28 @@ export default function HomeScreen() {
           </div>
         </div>
       )}
+
+      {/* Footer con marca */}
+      <div className="flex flex-col items-center gap-3 pt-2 flex-shrink-0">
+        <p className="text-xs text-gray-500">
+          100% offline · Sin cuentas · Un solo dispositivo
+        </p>
+        <a
+          href="https://devcraftpablo.online/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full py-2 px-4 hover:bg-white/10 hover:border-indigo-500/30 transition-all group"
+        >
+          <img
+            src="/logo/devcraft-logo.png"
+            alt="DevCraft"
+            className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 group-hover:ring-indigo-400/50 transition-all"
+          />
+          <span className="text-xs text-gray-300 group-hover:text-white transition-colors">
+            Más proyectos en <span className="font-semibold text-indigo-400 group-hover:text-indigo-300">devcraftpablo.online</span>
+          </span>
+        </a>
+      </div>
     </div>
   );
 }
