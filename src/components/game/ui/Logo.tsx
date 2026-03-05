@@ -16,7 +16,7 @@ const sizeMap = {
 
 /**
  * Logo del juego El Impostor.
- * Usa la imagen SVG de /logo/impostorlogo2.svg
+ * Usa la imagen SVG de /logo/impostordev1.svg
  */
 export default function Logo({
   size = 'md',

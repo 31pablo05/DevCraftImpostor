@@ -10,7 +10,7 @@
   "categories": ["games", "entertainment"],
   "icons": [
     {
-      "src": "/logo/impostorlogo2.svg",
+      "src": "/logo/impostordev1.svg",
       "sizes": "500x500",
       "type": "image/svg+xml",
       "purpose": "any"
