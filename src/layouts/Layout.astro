@@ -76,8 +76,29 @@ import '../styles/global.css';
 
     <!-- Styles are imported via Astro frontmatter -->
   </head>
-  <body class="bg-gray-900 text-gray-100 antialiased font-sans overscroll-none">
-    <slot />
+  <body class="text-gray-100 antialiased font-sans overscroll-none bg-gray-900">
+    <!-- Fondo fijo que cubre toda la pantalla -->
+    <div 
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: url(/logo/impostormobile3.svg);
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0.15;
+        z-index: 0;
+        pointer-events: none;
+      "
+      aria-hidden="true"
+    ></div>
+    <!-- Contenido de la app -->
+    <div style="position: relative; z-index: 1; min-height: 100vh;">
+      <slot />
+    </div>
 
     <!-- Register Service Worker -->
     <script is:inline>

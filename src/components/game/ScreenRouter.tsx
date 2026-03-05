@@ -27,24 +27,5 @@ const screenMap: Record<string, React.FC> = {
 export default function ScreenRouter() {
   const { state } = useGame();
   const Screen = screenMap[state.phase] ?? HomeScreen;
-  return (
-    <div className="relative min-h-dvh">
-      {/* Fondo global del juego */}
-      <div 
-        className="fixed inset-0 z-0 pointer-events-none select-none bg-gray-900" 
-        aria-hidden="true"
-        style={{
-          backgroundImage: 'url(/logo/impostormobile3.svg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.2
-        }}
-      />
-      {/* Pantalla activa */}
-      <div className="relative z-10">
-        <Screen />
-      </div>
-    </div>
-  );
+  return <Screen />;
 }
