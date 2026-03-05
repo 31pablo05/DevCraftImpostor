@@ -77,24 +77,52 @@ import '../styles/global.css';
     <!-- Styles are imported via Astro frontmatter -->
   </head>
   <body class="text-gray-100 antialiased font-sans overscroll-none bg-gray-900">
-    <!-- Fondo fijo que cubre toda la pantalla -->
-    <div 
+    <!-- Fondo fijo con video que cubre toda la pantalla -->
+    <video
+      id="bg-video"
+      autoplay
+      muted
+      playsinline
       style="
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-image: url(/logo/mobileimpostor4.svg);
-        background-size: cover;
-        background-position: center -15%;
-        background-repeat: no-repeat;
+        object-fit: cover;
         opacity: 1;
         z-index: 0;
         pointer-events: none;
+        transition: opacity 0.5s ease;
       "
       aria-hidden="true"
-    ></div>
+    >
+      <source src="/video/fondodeljuego.mp4" type="video/mp4" />
+    </video>
+    <script is:inline>
+      (function () {
+        var video = document.getElementById('bg-video');
+        if (!video) return;
+        var fadeDuration = 0.5;
+        var fading = false;
+        video.addEventListener('timeupdate', function () {
+          if (!video.duration) return;
+          var remaining = video.duration - video.currentTime;
+          if (remaining <= fadeDuration && !fading) {
+            fading = true;
+            video.style.opacity = '0';
+          }
+        });
+        video.addEventListener('ended', function () {
+          video.currentTime = 0;
+          video.play();
+          setTimeout(function () {
+            video.style.opacity = '1';
+            fading = false;
+          }, 50);
+        });
+      })();
+    </script>
     <!-- Contenido de la app -->
     <div style="position: relative; z-index: 1; min-height: 100vh;">
       <slot />

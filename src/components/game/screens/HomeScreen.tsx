@@ -9,16 +9,6 @@ export default function HomeScreen() {
 
   return (
     <div className="min-h-dvh flex flex-col items-center justify-end gap-3 pt-[55vh] pb-6 px-6 overflow-y-auto">
-      {/* Título */}
-      <div className="text-center animate-fade-in flex flex-col items-center flex-shrink-0">
-        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-0.5">
-          El Impostor
-        </h1>
-        <p className="text-sm sm:text-base font-medium text-indigo-300 tracking-wide">
-          ¿Podrás descubrir quién miente?
-        </p>
-      </div>
-
       {/* Acciones principales */}
       <div className="w-full max-w-xs flex flex-col gap-2.5 animate-fade-in flex-shrink-0">
         <Button
@@ -38,6 +28,10 @@ export default function HomeScreen() {
         >
           📖 Cómo jugar
         </Button>
+
+        <p className="text-sm sm:text-base font-medium text-indigo-300 tracking-wide text-center">
+          ¿Podrás descubrir quién miente?
+        </p>
 
         <Button
           onClick={() => dispatch({ type: 'SHOW_WORD_PACKS' })}

@@ -1,7 +1,7 @@
-const CACHE_NAME = 'impostor-v10';
+const CACHE_NAME = 'impostor-v11';
 const ASSETS = [
   '/manifest.json',
-  '/logo/mobileimpostor4.svg',
+  '/video/fondodeljuego.mp4',
   '/logo/mobileimpostor1.svg',
   '/logo/impostordev1.svg',
   '/logo/impostordev2.svg',
