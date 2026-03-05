@@ -8,10 +8,10 @@ export default function HomeScreen() {
   const { canInstall, isInstalled, isInstalling, isIOS, showIOSGuide, setShowIOSGuide, install } = useInstallPWA();
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-end gap-5 pt-[55vh] pb-8 px-6 overflow-y-auto">
+    <div className="min-h-dvh flex flex-col items-center justify-end gap-3 pt-[55vh] pb-6 px-6 overflow-y-auto">
       {/* Título */}
       <div className="text-center animate-fade-in flex flex-col items-center flex-shrink-0">
-        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-1">
+        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-0.5">
           El Impostor
         </h1>
         <p className="text-sm sm:text-base font-medium text-indigo-300 tracking-wide">
@@ -20,7 +20,7 @@ export default function HomeScreen() {
       </div>
 
       {/* Acciones principales */}
-      <div className="w-full max-w-xs flex flex-col gap-3 animate-fade-in flex-shrink-0">
+      <div className="w-full max-w-xs flex flex-col gap-2.5 animate-fade-in flex-shrink-0">
         <Button
           onClick={() => dispatch({ type: 'START_SETUP' })}
           variant="primary"
@@ -102,7 +102,7 @@ export default function HomeScreen() {
       )}
 
       {/* Footer con marca */}
-      <div className="flex flex-col items-center gap-3 pt-2 flex-shrink-0">
+      <div className="flex flex-col items-center gap-2 pt-1 flex-shrink-0">
         <p className="text-xs text-gray-500">
           100% offline · Sin cuentas · Un solo dispositivo
         </p>
