@@ -103,6 +103,7 @@ import '../styles/global.css';
       (function () {
         var video = document.getElementById('bg-video');
         if (!video) return;
+        video.playbackRate = 0.6;
         var fadeDuration = 0.5;
         var fading = false;
         video.addEventListener('timeupdate', function () {
