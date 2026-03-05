@@ -8,13 +8,13 @@ export default function HomeScreen() {
   const { canInstall, isInstalled, isInstalling, isIOS, showIOSGuide, setShowIOSGuide, install } = useInstallPWA();
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center gap-6 py-8 px-6 overflow-y-auto">
+    <div className="min-h-dvh flex flex-col items-center justify-end gap-5 pt-[55vh] pb-8 px-6 overflow-y-auto">
       {/* Título */}
       <div className="text-center animate-fade-in flex flex-col items-center flex-shrink-0">
-        <h1 className="text-5xl sm:text-6xl font-black text-white tracking-tight mb-2">
+        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-1">
           El Impostor
         </h1>
-        <p className="text-base sm:text-lg font-medium text-indigo-300 tracking-wide">
+        <p className="text-sm sm:text-base font-medium text-indigo-300 tracking-wide">
           ¿Podrás descubrir quién miente?
         </p>
       </div>
